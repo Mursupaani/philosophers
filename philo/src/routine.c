@@ -12,13 +12,15 @@
 
 #include "../incl/philo.h"
 
-void	*philo_routine(void *arg)
+void	*routine(void *arg)
 {
 	struct timeval	time;
-	t_app			*app;
+	suseconds_t		last_meal_time;
+	t_table			*table;
 
-	app = (t_app *)arg;
+	table = (t_table *)arg;
 	if (gettimeofday(&time, NULL))
-		exit_failure(app);
+		exit_failure(table);
+	(void)last_meal_time;
 	return (NULL);
 }

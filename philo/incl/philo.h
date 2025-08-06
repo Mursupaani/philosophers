@@ -21,29 +21,39 @@
 # include <limits.h>
 # include <string.h>
 
-typedef struct s_app
+typedef struct s_philosoper t_philosopher;
+
+typedef struct s_table
 {
 	int				params[5];
-	pthread_t		*philos;
-	pthread_mutex_t	*forks_mutexes;
+	int				num_of_philos_created;
+	int				num_of_mutexes_created;
 	bool			all_philosophers_alive;
-}	t_app;
+	t_philosopher	*philos;
+}	t_table;
 
-enum	e_
+typedef struct s_philosoper
 {
-	PHILOS_COUNT,
+	pthread_t		philo;
+	pthread_mutex_t	fork_mutex;
+	t_table			*table;
+}	t_philo;
+
+enum	e_input_args
+{
+	COUNT,
 	TIME_TO_DIE,
 	TIME_TO_EAT,
 	TIME_TO_SLEEP,
 	TIMES_TO_EAT
 }	;
 
-void	parse_input_args(int ac, char **av, t_app *app);
+void	parse_input_args(int ac, char **av, t_table *table);
 int		*ft_atoi_safe(const char *nptr);
-void	exit_failure(t_app *app);
-void	*philo_routine(void *arg);
-void	join_philosophers_to_main(t_app *app);
-void	destroy_forks_mutexes(t_app *app);
-void	free_app_memory(t_app *app);
+void	exit_failure(t_table *table);
+void	*routine(void *arg);
+void	join_philosophers_to_main(t_table *table);
+void	destroy_forks_mutexes(t_table *table);
+void	free_app_memory(t_table *table);
 
 #endif

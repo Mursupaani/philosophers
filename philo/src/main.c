@@ -11,68 +11,62 @@
 /* ************************************************************************** */
 
 #include "../incl/philo.h"
-#include <pthread.h>
 
-static t_app	*init_app(void);
-static void		init_philosophers(t_app *app);
-static void		init_forks_mutexes(t_app *app);
+static t_table	*init_table(void);
+static void		init_philosophers(t_table *table);
+static void		init_forks_mutexes(t_table *table);
 
 int	main(int ac, char *av[])
 {
-	t_app		*app;
+	t_table		*table;
 
 	if (ac < 5 || ac > 6)
 		return (EXIT_FAILURE);
-	app = init_app();
-	parse_input_args(ac, av, app);
-	init_forks_mutexes(app);
-	init_philosophers(app);
-	join_philosophers_to_main(app);
-	destroy_forks_mutexes(app);
-	free_app_memory(app);
+	table = init_table();
+	parse_input_args(ac, av, table);
+	init_forks_mutexes(table);
+	init_philosophers(table);
+	free_app_memory(table);
 	return (EXIT_SUCCESS);
 }
 
-static void	init_philosophers(t_app *app)
+static void	init_philosophers(t_table *table)
 {
 	int	i;
-	app->philos = (pthread_t *)malloc(sizeof(pthread_t) * app->params[PHILOS_COUNT]);
-	if (!app->philos)
-		exit_failure(app);
+	table->philos = (t_philo *)malloc(sizeof(t_philo) * table->params[COUNT]);
+	if (!table->philos)
+		exit_failure(table);
 	i = 0;
-	while (i < app->params[PHILOS_COUNT])
+	while (i < table->params[COUNT])
 	{
-		if (pthread_create(&app->philos[i], NULL, &philo_routine, app))
-			exit_failure(app);
+		if (pthread_create(&table->philos[i].philo, NULL, &routine, table))
+			exit_failure(table);
+		table->num_of_philos_created++;
 		i++;
 	}
 }
 
-static void	init_forks_mutexes(t_app *app)
+static void	init_forks_mutexes(t_table *table)
 {
 	int	i;
 
-	app->forks_mutexes = malloc(sizeof(pthread_mutex_t) * app->params[PHILOS_COUNT]);
-	if (!app->forks_mutexes)
-		exit_failure(app);
 	i = 0;
-	while (i < app->params[PHILOS_COUNT])
+	while (i < table->params[COUNT])
 	{
-		if (pthread_mutex_init(&app->forks_mutexes[i], NULL))
-			exit_failure(app);
+		table->num_of_mutexes_created++;
 		i++;
 	}
 }
 
-static t_app	*init_app(void)
+static t_table	*init_table(void)
 {
-	t_app	*app;
+	t_table	*table;
 
-	app = (t_app *)malloc(sizeof(t_app));
-	if (!app)
+	table = (t_table *)malloc(sizeof(t_table));
+	if (!table)
 		exit(EXIT_FAILURE);
-	memset(app, 0, sizeof(t_app));
-	app->params[TIMES_TO_EAT] = -1;
-	app->all_philosophers_alive = true;
-	return (app);
+	memset(table, 0, sizeof(t_table));
+	table->params[TIMES_TO_EAT] = -1;
+	table->all_philosophers_alive = true;
+	return (table);
 }
