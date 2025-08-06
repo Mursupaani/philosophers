@@ -12,6 +12,7 @@
 
 #ifndef PHILO_H
 # define PHILO_H
+#include <stddef.h>
 # include <stdlib.h>
 # include <stdio.h>
 # include <unistd.h>
@@ -33,7 +34,7 @@ typedef struct s_table
 	sig_atomic_t	all_philosophers_ready;
 	pthread_mutex_t	alive_mutex;
 	t_philosopher	*philos;
-	suseconds_t		start_time;
+	size_t			start_time;
 }	t_table;
 
 typedef struct s_philosoper
@@ -42,11 +43,11 @@ typedef struct s_philosoper
 	pthread_mutex_t	fork_mutex;
 	int				index;
 	int				index_next;
-	long int		time_to_die;
+	size_t			time_to_die;
 	long int		time_to_eat;
 	long int		time_to_sleep;
 	int				times_to_eat;
-	suseconds_t		last_meal_time;
+	size_t			last_meal_time;
 	t_table			*table;
 }	t_philo;
 
@@ -59,14 +60,14 @@ enum	e_input_args
 	TIMES_TO_EAT
 }	;
 
-void		parse_input_args(int ac, char **av, t_table *table);
-int			*ft_atoi_safe(const char *nptr);
-void		*routine(void *arg);
-void		join_philosophers_to_main(t_table *table);
-void		destroy_forks_mutexes(t_table *table);
-void		free_app_memory(t_table *table);
-suseconds_t	time_now(struct timeval *time, t_philo *philo);
-void		exit_failure(t_table *table);
-void		exit_philo_died(t_table *table);
+void	parse_input_args(int ac, char **av, t_table *table);
+int		*ft_atoi_safe(const char *nptr);
+void	*routine(void *arg);
+void	join_philosophers_to_main(t_table *table);
+void	destroy_forks_mutexes(t_table *table);
+void	free_app_memory(t_table *table);
+size_t	time_now(struct timeval *time, t_philo *philo);
+void	exit_failure(t_table *table);
+void	exit_philo_died(t_table *table);
 
 #endif

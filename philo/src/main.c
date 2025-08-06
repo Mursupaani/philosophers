@@ -15,7 +15,7 @@
 static t_table	*init_table(void);
 static void		init_philosophers(t_table *table);
 static void		init_forks_mutexes(t_table *table);
-static void	start_routines(t_table *table);
+static void		start_routines(t_table *table);
 
 int	main(int ac, char *av[])
 {
@@ -60,7 +60,7 @@ static void	init_philosophers(t_table *table)
 	i = 0;
 	while (i < table->params[COUNT])
 	{
-		table->philos[i].time_to_die = table->params[TIME_TO_DIE];
+		table->philos[i].time_to_die = (size_t)table->params[TIME_TO_DIE];
 		table->philos[i].time_to_eat = table->params[TIME_TO_EAT];
 		table->philos[i].time_to_sleep = table->params[TIME_TO_SLEEP];
 		table->philos[i].times_to_eat = table->params[TIMES_TO_EAT];
