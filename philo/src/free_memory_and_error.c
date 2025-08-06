@@ -6,7 +6,7 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 09:57:05 by anpollan          #+#    #+#             */
-/*   Updated: 2025/08/06 12:28:19 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/08/06 16:40:36 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,18 @@ void	exit_failure(t_table *table)
 	exit(EXIT_FAILURE);
 }
 
+void	exit_philo_died(t_table *table)
+{
+	free_app_memory(table);
+	exit(EXIT_SUCCESS);
+}
+
 void	free_app_memory(t_table *table)
 {
 	if (!table)
 		return ;
-	join_philosophers_to_main(table);
 	destroy_forks_mutexes(table);
+	join_philosophers_to_main(table);
 	if (table->philos)
 		free(table->philos);
 	free(table);

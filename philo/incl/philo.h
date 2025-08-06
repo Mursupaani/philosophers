@@ -6,7 +6,7 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 15:45:07 by anpollan          #+#    #+#             */
-/*   Updated: 2025/08/06 12:28:06 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/08/06 17:05:46 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <stdbool.h>
 # include <limits.h>
 # include <string.h>
+# include <signal.h>
 
 typedef struct s_philosoper t_philosopher;
 
@@ -28,14 +29,24 @@ typedef struct s_table
 	int				params[5];
 	int				num_of_philos_created;
 	int				num_of_mutexes_created;
-	bool			all_philosophers_alive;
+	sig_atomic_t	all_philosophers_alive;
+	sig_atomic_t	all_philosophers_ready;
+	pthread_mutex_t	alive_mutex;
 	t_philosopher	*philos;
+	suseconds_t		start_time;
 }	t_table;
 
 typedef struct s_philosoper
 {
 	pthread_t		philo;
 	pthread_mutex_t	fork_mutex;
+	int				index;
+	int				index_next;
+	long int		time_to_die;
+	long int		time_to_eat;
+	long int		time_to_sleep;
+	int				times_to_eat;
+	suseconds_t		last_meal_time;
 	t_table			*table;
 }	t_philo;
 
@@ -48,12 +59,14 @@ enum	e_input_args
 	TIMES_TO_EAT
 }	;
 
-void	parse_input_args(int ac, char **av, t_table *table);
-int		*ft_atoi_safe(const char *nptr);
-void	exit_failure(t_table *table);
-void	*routine(void *arg);
-void	join_philosophers_to_main(t_table *table);
-void	destroy_forks_mutexes(t_table *table);
-void	free_app_memory(t_table *table);
+void		parse_input_args(int ac, char **av, t_table *table);
+int			*ft_atoi_safe(const char *nptr);
+void		*routine(void *arg);
+void		join_philosophers_to_main(t_table *table);
+void		destroy_forks_mutexes(t_table *table);
+void		free_app_memory(t_table *table);
+suseconds_t	time_now(struct timeval *time, t_philo *philo);
+void		exit_failure(t_table *table);
+void		exit_philo_died(t_table *table);
 
 #endif
