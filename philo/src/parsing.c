@@ -1,0 +1,32 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/08/06 09:37:43 by anpollan          #+#    #+#             */
+/*   Updated: 2025/08/06 10:26:19 by anpollan         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../incl/philo.h"
+
+void	parse_input_args(int ac, char **av, t_app *app)
+{
+	int	*temp;
+	int	i;
+	int	j;
+
+	i = 1;
+	j = 0;
+	while (i < ac)
+	{
+		temp = ft_atoi_safe(av[i]);
+		if (!temp)
+			exit_failure(app);
+		app->params[j] = *temp;
+		i++;
+		j++;
+	}
+}
