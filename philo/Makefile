@@ -6,7 +6,7 @@
 #    By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 13:06:22 by anpollan          #+#    #+#              #
-#    Updated: 2025/08/07 15:30:14 by anpollan         ###   ########.fr        #
+#    Updated: 2025/08/07 16:45:27 by anpollan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,8 +19,10 @@ SRC 		= ./src/main.c \
 			  ./src/free_memory.c \
 			  ./src/routine.c \
 			  ./src/routine_utils.c \
+			  ./src/routine_utils2.c \
 			  ./src/initialize.c \
-			  ./src/observer_routine.c
+			  ./src/observer_routine.c \
+			  ./src/printing.c
 OBJS 		= $(SRC:%.c=%.o)
 HEADER		= ./incl/philo.h
 C_FLAGS		= -Wall -Wextra -Werror -pthread -g

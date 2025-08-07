@@ -17,6 +17,7 @@ static bool	start_routines(t_table *table);
 int	main(int ac, char *av[])
 {
 	t_table		*table;
+	int			exit_status;
 
 	if (ac < 5 || ac > 6)
 		return (EXIT_FAILURE);
@@ -31,14 +32,17 @@ int	main(int ac, char *av[])
 		return (EXIT_FAILURE);
 	if (!start_routines(table))
 		return (EXIT_FAILURE);
-	observer_routine(table);
+	if (observer_routine(table))
+		exit_status = EXIT_SUCCESS;
+	else
+		exit_status = EXIT_FAILURE;
 	free_app_memory(table);
-	return (EXIT_SUCCESS);
+	return (exit_status);
 }
 
 static bool	start_routines(t_table *table)
 {
-	int				i;
+	int	i;
 
 	i = 0;
 	while (i < table->params[COUNT])

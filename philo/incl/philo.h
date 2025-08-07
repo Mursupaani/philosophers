@@ -6,7 +6,7 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 15:45:07 by anpollan          #+#    #+#             */
-/*   Updated: 2025/08/07 15:39:46 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/08/07 16:59:23 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 # include <limits.h>
 # include <string.h>
 # include <signal.h>
+
+# define EVEN_PHILO_WAIT_TIME 200
 
 typedef struct s_philosoper t_philosopher;
 
@@ -44,6 +46,7 @@ typedef struct s_philosoper
 	pthread_t		philo;
 	pthread_mutex_t	fork_mutex;
 	int				index;
+	int				n;
 	int				index_next;
 	size_t			time_to_die;
 	long int		time_to_eat;
@@ -63,12 +66,19 @@ enum	e_input_args
 	TIMES_TO_EAT
 }	;
 
+enum	e_philo_state
+{
+	THINKING,
+	TAKE_FORK,
+	EATING,
+	SLEEPING,
+	DEAD
+}	;
+
 bool	parse_input_args(int ac, char **av, t_table *table);
 int		*ft_atoi_safe(const char *nptr);
 void	*routine(void *arg);
-void	observer_routine(t_table *table);
-void	join_philosophers_to_main(t_table *table);
-void	destroy_forks_mutexes(t_table *table);
+bool	observer_routine(t_table *table);
 void	free_app_memory(t_table *table);
 size_t	elapsed_time(t_philo *philo);
 bool	init_table_mutexes(t_table *table);
@@ -76,5 +86,12 @@ t_table	*init_table(void);
 bool	init_philosophers(t_table *table);
 bool	init_forks_mutexes(t_table *table);
 size_t	ms_between_meals(t_philo *philo);
+void	make_even_philos_wait(t_philo *philo);
+void	wait_for_philosophers_to_be_ready(t_philo *philo);
+bool	all_philos_alive(t_philo *philo);
+void	print_philo_state(t_philo *philo, int state);
+bool	is_philo_alive(t_philo *philo);
+void	take_forks(t_philo *philo);
+void	return_forks(t_philo *philo);
 
 #endif
