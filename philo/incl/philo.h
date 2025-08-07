@@ -60,14 +60,12 @@ enum	e_input_args
 	TIMES_TO_EAT
 }	;
 
-void	parse_input_args(int ac, char **av, t_table *table);
+bool	parse_input_args(int ac, char **av, t_table *table);
 int		*ft_atoi_safe(const char *nptr);
 void	*routine(void *arg);
 void	join_philosophers_to_main(t_table *table);
 void	destroy_forks_mutexes(t_table *table);
 void	free_app_memory(t_table *table);
 size_t	time_now(struct timeval *time, t_philo *philo);
-void	exit_failure(t_table *table);
-void	exit_philo_died(t_table *table);
 
 #endif

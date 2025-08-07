@@ -16,7 +16,7 @@ INCL_DIR	= ./incl/
 SRC 		= ./src/main.c \
 			  ./src/parsing.c \
 			  ./src/ft_atoi_safe.c \
-			  ./src/free_memory_and_error.c \
+			  ./src/free_memory.c \
 			  ./src/routine.c \
 			  ./src/routine_utils.c
 OBJS 		= $(SRC:%.c=%.o)

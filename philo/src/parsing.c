@@ -12,7 +12,7 @@
 
 #include "../incl/philo.h"
 
-void	parse_input_args(int ac, char **av, t_table *table)
+bool	parse_input_args(int ac, char **av, t_table *table)
 {
 	int	*temp;
 	int	i;
@@ -24,11 +24,15 @@ void	parse_input_args(int ac, char **av, t_table *table)
 	{
 		temp = ft_atoi_safe(av[i]);
 		if (!temp)
-			exit_failure(table);
+		{
+			free_app_memory(table);
+			return (false);
+		}
 		if (i != 1 && i != 5)
 			*temp *= 1000;
 		table->params[j] = *temp;
 		i++;
 		j++;
 	}
+	return (true);
 }

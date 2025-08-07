@@ -13,9 +13,9 @@
 #include "../incl/philo.h"
 
 static t_table	*init_table(void);
-static void		init_philosophers(t_table *table);
-static void		init_forks_mutexes(t_table *table);
-static void		start_routines(t_table *table);
+static bool		init_philosophers(t_table *table);
+static bool		init_forks_mutexes(t_table *table);
+static bool		start_routines(t_table *table);
 
 int	main(int ac, char *av[])
 {
@@ -24,15 +24,21 @@ int	main(int ac, char *av[])
 	if (ac < 5 || ac > 6)
 		return (EXIT_FAILURE);
 	table = init_table();
-	parse_input_args(ac, av, table);
-	init_philosophers(table);
-	init_forks_mutexes(table);
-	start_routines(table);
+	if (!table)
+		return (EXIT_FAILURE);
+	if (!parse_input_args(ac, av, table))
+		return (EXIT_FAILURE);
+	if (!init_philosophers(table))
+		return (EXIT_FAILURE);
+	if (!init_forks_mutexes(table))
+		return (EXIT_FAILURE);
+	if (!start_routines(table))
+		return (EXIT_FAILURE);
 	free_app_memory(table);
 	return (EXIT_SUCCESS);
 }
 
-static void	start_routines(t_table *table)
+static bool	start_routines(t_table *table)
 {
 	int				i;
 	struct timeval	time;
@@ -41,22 +47,32 @@ static void	start_routines(t_table *table)
 	while (i < table->params[COUNT])
 	{
 		if (pthread_create(&table->philos[i].philo, NULL, &routine, &table->philos[i]))
-			exit_failure(table);
+		{
+			free_app_memory(table);
+			return (false);
+		}
 		i++;
 	}
 	if (gettimeofday(&time, NULL))
-		exit_failure(table);
+	{
+		free_app_memory(table);
+		return (false);
+	}
 	table->start_time = time.tv_usec;
 	table->all_philosophers_ready = true;
+	return (true);
 }
 
-static void	init_philosophers(t_table *table)
+static bool	init_philosophers(t_table *table)
 {
 	int	i;
 
 	table->philos = (t_philo *)malloc(sizeof(t_philo) * table->params[COUNT]);
 	if (!table->philos)
-		exit_failure(table);
+	{
+		free_app_memory(table);
+		return (false);
+	}
 	i = 0;
 	while (i < table->params[COUNT])
 	{
@@ -73,22 +89,30 @@ static void	init_philosophers(t_table *table)
 		table->num_of_philos_created++;
 		i++;
 	}
+	return (true);
 }
 
-static void	init_forks_mutexes(t_table *table)
+static bool	init_forks_mutexes(t_table *table)
 {
 	int	i;
 
 	if (pthread_mutex_init(&table->alive_mutex, NULL))
-		exit_failure(table);
+	{
+		free_app_memory(table);
+		return (false);
+	}
 	i = 0;
 	while (i < table->num_of_philos_created)
 	{
 		if (pthread_mutex_init(&table->philos[i].fork_mutex, NULL))
-			exit_failure(table);
+		{
+			free_app_memory(table);
+			return (false);
+		}
 		table->num_of_mutexes_created++;
 		i++;
 	}
+	return (true);
 }
 
 static t_table	*init_table(void)
@@ -97,7 +121,7 @@ static t_table	*init_table(void)
 
 	table = (t_table *)malloc(sizeof(t_table));
 	if (!table)
-		exit(EXIT_FAILURE);
+		return (NULL);
 	memset(table, 0, sizeof(t_table));
 	table->params[TIMES_TO_EAT] = -1;
 	table->all_philosophers_alive = true;
