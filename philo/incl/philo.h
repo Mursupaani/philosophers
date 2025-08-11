@@ -108,5 +108,6 @@ void	update_finished_eating_flag(t_philo *philo);
 void	check_death_during_sleeping(t_philo *philo);
 bool	lock_fork(t_philo *philo, t_philo *philo_to_lock);
 void	free_fork(t_philo *philo_to_free);
+bool	take_forks(t_philo *philo);
 
 #endif

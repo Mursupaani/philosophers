@@ -15,7 +15,6 @@
 static bool	p_think(t_philo *philo);
 static bool	p_sleep(t_philo *philo);
 static bool	p_eat(t_philo *philo);
-static bool	take_forks(t_philo *philo);
 
 void	*routine(void *arg)
 {
@@ -78,68 +77,3 @@ static bool	p_sleep(t_philo *philo)
 	check_death_during_sleeping(philo);
 	return (true);
 }
-
-static bool	take_forks(t_philo *philo)
-{
-	t_philo	*philo_1;
-	t_philo	*philo_2;
-
-	if (philo->index % 2 == 0)
-	{
-		philo_1 = philo;
-		philo_2 = &philo->table->philos[philo->index_next];
-	}
-	else
-	{
-		philo_1 = &philo->table->philos[philo->index_next];
-		philo_2 = philo;
-	}
-	if (!lock_fork(philo, philo_1))
-		return (false);
-	is_philo_alive(philo);
-	print_philo_state(philo, TAKE_FORK);
-	if (!lock_fork(philo, philo_2))
-	{
-		free_fork(philo_1);
-		return (false);
-	}
-	is_philo_alive(philo);
-	print_philo_state(philo, TAKE_FORK);
-	return (true);
-}
-
-// static bool	take_forks(t_philo *philo)
-// {
-// 	t_philo	*philo_1;
-// 	t_philo	*philo_2;
-//
-// 	if (philo->index % 2 == 0)
-// 	{
-// 		if (!lock_own_fork(philo))
-// 			return (false);
-// 		is_philo_alive(philo);
-// 		print_philo_state(philo, TAKE_FORK);
-// 		if (!lock_neighbor_fork(philo))
-// 		{
-// 			free_own_fork(philo);
-// 			return (false);
-// 		}
-// 		is_philo_alive(philo);
-// 		print_philo_state(philo, TAKE_FORK);
-// 	}
-// 	else
-// 	{
-// 		if (!lock_neighbor_fork(philo))
-// 			return (false);
-// 		is_philo_alive(philo);
-// 		print_philo_state(philo, TAKE_FORK);
-// 		if (!lock_own_fork(philo))
-// 		{
-// 			free_neighbor_fork(philo);
-// 			return (false);
-// 		}
-// 		is_philo_alive(philo);
-// 		print_philo_state(philo, TAKE_FORK);
-// 	}
-// 	return (true);
-// }
