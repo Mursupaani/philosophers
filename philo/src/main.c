@@ -6,11 +6,12 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 15:42:46 by anpollan          #+#    #+#             */
-/*   Updated: 2025/08/07 15:44:14 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/08/11 13:25:32 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/philo.h"
+#include <pthread.h>
 
 static bool	start_routines(t_table *table);
 
@@ -46,6 +47,14 @@ static bool	start_routines(t_table *table)
 {
 	int	i;
 
+	if (table->num_of_philos_created == 1)
+	{
+		if (pthread_create(&table->philos[0].philo, NULL, &routine_for_one, &table->philos[0]))
+		{
+			free_app_memory(table);
+			return (false);
+		}
+	}
 	i = 0;
 	while (i < table->params[COUNT])
 	{

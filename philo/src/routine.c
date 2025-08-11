@@ -6,7 +6,7 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 11:55:27 by anpollan          #+#    #+#             */
-/*   Updated: 2025/08/07 16:59:48 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/08/11 13:25:52 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,12 @@ void	*routine(void *arg)
 	{
 		if (!philo->times_to_eat || !all_philos_alive(philo))
 			break ;
-		if (!p_think(philo))
-			break ;
 		if (!p_eat(philo))
 			break ;
 		if (!p_sleep(philo))
 			break ;
-		if (philo->n == 20)
-		{
-			pthread_mutex_lock(&philo->table->all_alive_mutex);
-			philo->table->all_philosophers_alive = false;
-			pthread_mutex_unlock(&philo->table->all_alive_mutex);
-		}
+		if (!p_think(philo))
+			break ;
 	}
 	update_finished_eating_flag(philo);
 	return (NULL);
@@ -55,15 +49,16 @@ static bool	p_think(t_philo *philo)
 
 static bool	p_eat(t_philo *philo)
 {
-	take_forks(philo);
+	if (!take_forks(philo))
+		return (false);
 	if (!is_philo_alive(philo))
 	{
 		return_forks(philo);
 		return (false);
 	}
+	philo->last_meal_time = elapsed_time(philo);
 	print_philo_state(philo, EATING);
 	usleep(philo->time_to_eat);
-	philo->last_meal_time = elapsed_time(philo);
 	return_forks(philo);
 	if (philo->times_to_eat != -1)
 		philo->times_to_eat--;
@@ -75,6 +70,6 @@ static bool	p_sleep(t_philo *philo)
 	if (!is_philo_alive(philo))
 		return (false);
 	print_philo_state(philo, SLEEPING);
-	usleep(philo->time_to_sleep);
+	check_death_during_sleeping(philo);
 	return (true);
 }
