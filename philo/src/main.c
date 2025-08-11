@@ -28,7 +28,9 @@ int	main(int ac, char *av[])
 		return (EXIT_FAILURE);
 	if (!init_philosophers(table))
 		return (EXIT_FAILURE);
-	if (!init_forks_mutexes(table))
+	if (!init_forks_mutexes(table) || !init_table_mutexes(table))
+		return (EXIT_FAILURE);
+	if (!init_finished_eating_flags(table))
 		return (EXIT_FAILURE);
 	if (!start_routines(table))
 		return (EXIT_FAILURE);
@@ -47,7 +49,8 @@ static bool	start_routines(t_table *table)
 	i = 0;
 	while (i < table->params[COUNT])
 	{
-		if (pthread_create(&table->philos[i].philo, NULL, &routine, &table->philos[i]))
+		if (pthread_create(
+				&table->philos[i].philo, NULL, &routine, &table->philos[i]))
 		{
 			free_app_memory(table);
 			return (false);
