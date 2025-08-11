@@ -26,7 +26,7 @@ void	*routine(void *arg)
 	make_even_philos_wait(philo);
 	while (true)
 	{
-		if (!philo->times_to_eat || !all_philos_alive(philo))
+		if (!all_philos_alive(philo) || all_philosophers_ate_enough(philo))
 			break ;
 		if (!p_eat(philo))
 			break ;
@@ -35,13 +35,12 @@ void	*routine(void *arg)
 		if (!p_think(philo))
 			break ;
 	}
-	update_finished_eating_flag(philo);
 	return (NULL);
 }
 
 static bool	p_think(t_philo *philo)
 {
-	if (!is_philo_alive(philo))
+	if (!is_philo_alive(philo) || all_philosophers_ate_enough(philo))
 		return (false);
 	print_philo_state(philo, THINKING);
 	return (true);
@@ -53,25 +52,28 @@ static bool	p_eat(t_philo *philo)
 
 	if (!take_forks(philo))
 		return (false);
-	if (!is_philo_alive(philo))
+	if (!is_philo_alive(philo) || all_philosophers_ate_enough(philo))
 	{
 		return_forks(philo);
 		return (false);
 	}
 	print_philo_state(philo, EATING);
+	if (philo->times_to_eat > 0)
+	{
+		philo->times_to_eat--;
+		update_finished_eating_flag(philo);
+	}
 	end_eat = elapsed_time(philo) + philo->time_to_eat;
+	philo->last_meal_time = elapsed_time(philo);
 	while (all_philos_alive(philo) && end_eat > elapsed_time(philo))
 		usleep(PHILO_SLEEP_CYCLE_LENGTH);
-	philo->last_meal_time = end_eat;
 	return_forks(philo);
-	if (philo->times_to_eat != -1)
-		philo->times_to_eat--;
 	return (true);
 }
 
 static bool	p_sleep(t_philo *philo)
 {
-	if (!is_philo_alive(philo))
+	if (!is_philo_alive(philo) || all_philosophers_ate_enough(philo))
 		return (false);
 	print_philo_state(philo, SLEEPING);
 	check_death_during_sleeping(philo);

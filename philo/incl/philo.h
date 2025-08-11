@@ -35,18 +35,19 @@ typedef struct s_table
 	int				num_of_forks_mutexes_created;
 	int				num_of_forks_free_mutexes_created;
 	int				num_of_threads_created;
-	sig_atomic_t	all_philosophers_alive;
-	sig_atomic_t	all_philosophers_ready;
 	pthread_mutex_t	all_alive_mutex;
 	bool			all_alive_mutex_init;
+	bool			all_philosophers_alive;
 	pthread_mutex_t	all_ready_mutex;
 	bool			all_ready_mutex_init;
+	bool			all_philosophers_ready;
 	pthread_mutex_t	time_mutex;
 	bool			time_mutex_init;
 	pthread_mutex_t	finished_eating_mutex;
 	bool			finised_eating_mutex_init;
-	t_philosopher	*philos;
 	bool			*finished_eating;
+	bool			all_finished_eating;
+	t_philosopher	*philos;
 	struct timeval	start_time;
 }	t_table;
 
@@ -109,5 +110,6 @@ void	check_death_during_sleeping(t_philo *philo);
 bool	lock_fork(t_philo *philo, t_philo *philo_to_lock);
 void	free_fork(t_philo *philo_to_free);
 bool	take_forks(t_philo *philo);
+bool	all_philosophers_ate_enough(t_philo *philo);
 
 #endif
