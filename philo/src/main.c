@@ -24,7 +24,7 @@ int	main(int ac, char *av[])
 	table = init_table();
 	if (!table)
 		return (EXIT_FAILURE);
-	if (!parse_input_args(ac, av, table))
+	if (!parse_input_args(ac, av, table) || !table->params[PHILO_COUNT])
 		return (EXIT_FAILURE);
 	if (!init_philosophers(table))
 		return (EXIT_FAILURE);
@@ -47,7 +47,7 @@ static bool	start_routines(t_table *table)
 	int	i;
 
 	i = 0;
-	while (i < table->params[COUNT])
+	while (i < table->params[PHILO_COUNT])
 	{
 		if (pthread_create(
 				&table->philos[i].philo, NULL, &routine, &table->philos[i]))
@@ -55,6 +55,7 @@ static bool	start_routines(t_table *table)
 			free_app_memory(table);
 			return (false);
 		}
+		table->num_of_threads_created++;
 		i++;
 	}
 	if (gettimeofday(&table->start_time, NULL))

@@ -28,8 +28,6 @@ bool	parse_input_args(int ac, char **av, t_table *table)
 			free_app_memory(table);
 			return (false);
 		}
-		// if (i != 1 && i != 2 && i != 5)
-		// 	*temp *= 1000;
 		table->params[j] = *temp;
 		i++;
 		j++;

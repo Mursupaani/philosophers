@@ -20,7 +20,6 @@ SRC 		= ./src/main.c \
 			  ./src/routine.c \
 			  ./src/routine_utils.c \
 			  ./src/routine_utils2.c \
-			  ./src/routine_for_one.c \
 			  ./src/initialize.c \
 			  ./src/observer_routine.c \
 			  ./src/printing.c \

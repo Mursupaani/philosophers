@@ -34,6 +34,7 @@ typedef struct s_table
 	int				num_of_philos_created;
 	int				num_of_forks_mutexes_created;
 	int				num_of_forks_free_mutexes_created;
+	int				num_of_threads_created;
 	sig_atomic_t	all_philosophers_alive;
 	sig_atomic_t	all_philosophers_ready;
 	pthread_mutex_t	all_alive_mutex;
@@ -69,7 +70,7 @@ typedef struct s_philosoper
 
 enum	e_input_args
 {
-	COUNT,
+	PHILO_COUNT,
 	TIME_TO_DIE,
 	TIME_TO_EAT,
 	TIME_TO_SLEEP,
@@ -85,18 +86,9 @@ enum	e_philo_state
 	DEAD
 }	;
 
-enum	e_fork_operation
-{
-	FREE,
-	IN_USE,
-	SELF,
-	NEIGHBOR
-}	;
-
 bool	parse_input_args(int ac, char **av, t_table *table);
 int		*ft_atoi_safe(const char *nptr);
 void	*routine(void *arg);
-void	*routine_for_one(void *arg);
 bool	observer_routine(t_table *table);
 bool	free_app_memory(t_table *table);
 size_t	elapsed_time(t_philo *philo);
@@ -114,9 +106,7 @@ void	return_forks(t_philo *philo);
 bool	init_finished_eating_flags(t_table *table);
 void	update_finished_eating_flag(t_philo *philo);
 void	check_death_during_sleeping(t_philo *philo);
-bool	lock_own_fork(t_philo *philo);
-bool	lock_neighbor_fork(t_philo *philo);
-void	free_own_fork(t_philo *philo);
-void	free_neighbor_fork(t_philo *philo);
+bool	lock_fork(t_philo *philo, t_philo *philo_to_lock);
+void	free_fork(t_philo *philo_to_free);
 
 #endif

@@ -33,7 +33,7 @@ int	*ft_atoi_safe(const char *nptr)
 		*res += *nptr - '0';
 		nptr++;
 	}
-	if (*res <= INT_MAX && *res >= INT_MIN && (*nptr == '\0' || *nptr == '\n'))
+	if (*res <= INT_MAX && (*nptr == '\0' || *nptr == '\n'))
 		return ((int *)res);
 	return (NULL);
 }
