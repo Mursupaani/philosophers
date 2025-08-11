@@ -15,6 +15,7 @@
 static bool	p_think(t_philo *philo);
 static bool	p_sleep(t_philo *philo);
 static bool	p_eat(t_philo *philo);
+static bool	take_forks(t_philo *philo);
 
 void	*routine(void *arg)
 {
@@ -49,6 +50,8 @@ static bool	p_think(t_philo *philo)
 
 static bool	p_eat(t_philo *philo)
 {
+	size_t	end_eat;
+
 	if (!take_forks(philo))
 		return (false);
 	if (!is_philo_alive(philo))
@@ -58,7 +61,9 @@ static bool	p_eat(t_philo *philo)
 	}
 	philo->last_meal_time = elapsed_time(philo);
 	print_philo_state(philo, EATING);
-	usleep(philo->time_to_eat);
+	end_eat = elapsed_time(philo) + philo->time_to_eat;
+	while (all_philos_alive(philo) && end_eat > elapsed_time(philo))
+		usleep(PHILO_SLEEP_CYCLE_LENGTH);
 	return_forks(philo);
 	if (philo->times_to_eat != -1)
 		philo->times_to_eat--;
@@ -71,5 +76,38 @@ static bool	p_sleep(t_philo *philo)
 		return (false);
 	print_philo_state(philo, SLEEPING);
 	check_death_during_sleeping(philo);
+	return (true);
+}
+
+static bool	take_forks(t_philo *philo)
+{
+	if (philo->index % 2 == 0)
+	{
+		if (!lock_own_fork(philo))
+			return (false);
+		is_philo_alive(philo);
+		print_philo_state(philo, TAKE_FORK);
+		if (!lock_neighbor_fork(philo))
+		{
+			free_own_fork(philo);
+			return (false);
+		}
+		is_philo_alive(philo);
+		print_philo_state(philo, TAKE_FORK);
+	}
+	else
+	{
+		if (!lock_neighbor_fork(philo))
+			return (false);
+		is_philo_alive(philo);
+		print_philo_state(philo, TAKE_FORK);
+		if (!lock_own_fork(philo))
+		{
+			free_neighbor_fork(philo);
+			return (false);
+		}
+		is_philo_alive(philo);
+		print_philo_state(philo, TAKE_FORK);
+	}
 	return (true);
 }

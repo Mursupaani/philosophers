@@ -110,10 +110,13 @@ void	wait_for_philosophers_to_be_ready(t_philo *philo);
 bool	all_philos_alive(t_philo *philo);
 void	print_philo_state(t_philo *philo, int state);
 bool	is_philo_alive(t_philo *philo);
-bool	take_forks(t_philo *philo);
 void	return_forks(t_philo *philo);
 bool	init_finished_eating_flags(t_table *table);
 void	update_finished_eating_flag(t_philo *philo);
 void	check_death_during_sleeping(t_philo *philo);
+bool	lock_own_fork(t_philo *philo);
+bool	lock_neighbor_fork(t_philo *philo);
+void	free_own_fork(t_philo *philo);
+void	free_neighbor_fork(t_philo *philo);
 
 #endif
