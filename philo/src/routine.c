@@ -58,11 +58,11 @@ static bool	p_eat(t_philo *philo)
 		return_forks(philo);
 		return (false);
 	}
-	philo->last_meal_time = elapsed_time(philo);
 	print_philo_state(philo, EATING);
 	end_eat = elapsed_time(philo) + philo->time_to_eat;
 	while (all_philos_alive(philo) && end_eat > elapsed_time(philo))
 		usleep(PHILO_SLEEP_CYCLE_LENGTH);
+	philo->last_meal_time = end_eat;
 	return_forks(philo);
 	if (philo->times_to_eat != -1)
 		philo->times_to_eat--;
