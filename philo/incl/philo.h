@@ -87,6 +87,18 @@ enum	e_philo_state
 	DEAD
 }	;
 
+enum	e_error
+{
+	ERR_ARG_COUNT,
+	ERR_INIT_TABLE,
+	ERR_PARSING,
+	ERR_INIT_PHILO,
+	ERR_INIT_MUTEXES,
+	ERR_INIT_FINISH_EAT,
+	ERR_PHILO_THREADS,
+	ERR_OBSERVER_THREAD
+}	;
+
 bool	parse_input_args(int ac, char **av, t_table *table);
 int		*ft_atoi_safe(const char *nptr);
 void	*routine(void *arg);
@@ -111,5 +123,7 @@ bool	lock_fork(t_philo *philo, t_philo *philo_to_lock);
 void	free_fork(t_philo *philo_to_free);
 bool	take_forks(t_philo *philo);
 bool	all_philosophers_ate_enough(t_philo *philo);
+void	ft_putstr_fd(char *s, int fd);
+int		free_memory_and_print_error_message(t_table *table, int error);
 
 #endif

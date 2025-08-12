@@ -23,7 +23,8 @@ SRC 		= ./src/main.c \
 			  ./src/initialize.c \
 			  ./src/observer_routine.c \
 			  ./src/printing.c \
-			  ./src/forks.c
+			  ./src/forks.c \
+			  ./src/ft_putstr_fd.c
 OBJS 		= $(SRC:%.c=%.o)
 HEADER		= ./incl/philo.h
 C_FLAGS		= -Wall -Wextra -Werror -pthread -g

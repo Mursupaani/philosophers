@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "../incl/philo.h"
+#include <stdlib.h>
+#include <unistd.h>
 
 void	print_philo_state(t_philo *philo, int state)
 {
@@ -35,4 +37,27 @@ void	print_philo_state(t_philo *philo, int state)
 	}
 	pthread_mutex_unlock(&philo->table->all_alive_mutex);
 	pthread_mutex_unlock(&philo->table->finished_eating_mutex);
+}
+
+int	free_memory_and_print_error_message(t_table *table, int error)
+{
+	if (error == ERR_ARG_COUNT)
+		ft_putstr_fd("Error arg count\n", STDERR_FILENO);
+	if (error == ERR_INIT_TABLE)
+		ft_putstr_fd("Error initializing table\n", STDERR_FILENO);
+	else if (error == ERR_PARSING)
+		ft_putstr_fd("Error parsing\n", STDERR_FILENO);
+	else if (error == ERR_INIT_PHILO)
+		ft_putstr_fd("Error initializing philosophers\n", STDERR_FILENO);
+	else if (error == ERR_INIT_MUTEXES)
+		ft_putstr_fd("Error initializing mutexes\n", STDERR_FILENO);
+	else if (error == ERR_INIT_FINISH_EAT)
+		ft_putstr_fd("Error initializing finish eating flags\n", STDERR_FILENO);
+	else if (error == ERR_PHILO_THREADS)
+		ft_putstr_fd("Error creating philo threads\n", STDERR_FILENO);
+	else if (error == ERR_OBSERVER_THREAD)
+		ft_putstr_fd("Error in observer thread\n", STDERR_FILENO);
+	if (table)
+		free_app_memory(table);
+	return (EXIT_FAILURE);
 }
