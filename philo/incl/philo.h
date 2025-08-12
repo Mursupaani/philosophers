@@ -23,7 +23,7 @@
 # include <string.h>
 # include <signal.h>
 
-# define EVEN_PHILO_WAIT_TIME 200
+# define ODD_PHILO_WAIT_TIME 500
 # define PHILO_SLEEP_CYCLE_LENGTH 1000
 
 typedef struct s_philosoper	t_philosopher;
@@ -98,7 +98,7 @@ t_table	*init_table(void);
 bool	init_philosophers(t_table *table);
 bool	init_forks_mutexes(t_table *table);
 size_t	ms_between_meals(t_philo *philo);
-void	make_even_philos_wait(t_philo *philo);
+void	make_odd_philos_wait(t_philo *philo);
 void	wait_for_philosophers_to_be_ready(t_philo *philo);
 bool	all_philos_alive(t_philo *philo);
 void	print_philo_state(t_philo *philo, int state);

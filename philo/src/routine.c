@@ -23,9 +23,9 @@ void	*routine(void *arg)
 	philo = (t_philo *)arg;
 	wait_for_philosophers_to_be_ready(philo);
 	philo->last_meal_time = elapsed_time(philo);
-	make_even_philos_wait(philo);
 	while (true)
 	{
+		make_odd_philos_wait(philo);
 		if (!all_philos_alive(philo) || all_philosophers_ate_enough(philo))
 			break ;
 		if (!p_eat(philo))
