@@ -39,7 +39,7 @@ size_t	ms_between_meals(t_philo *philo)
 
 void	make_odd_philos_wait(t_philo *philo)
 {
-	if ((philo->index) % 2 == 0)
+	if ((philo->index) % 2 == 0 && philo->index != philo->index_next)
 		usleep(ODD_PHILO_WAIT_TIME);
 }
 

@@ -13,6 +13,7 @@
 #include "../incl/philo.h"
 
 static bool	all_philos_finished_eating(t_table *table);
+static bool	all_philos_still_alive(t_table *table);
 
 bool	observer_routine(t_table *table)
 {
@@ -27,16 +28,12 @@ bool	observer_routine(t_table *table)
 	}
 	while (true)
 	{
-		pthread_mutex_lock(&table->all_alive_mutex);
-		if (!table->all_philosophers_alive)
-		{
-			pthread_mutex_unlock(&table->all_alive_mutex);
+		if (!all_philos_still_alive(table))
 			return (true);
-		}
-		pthread_mutex_unlock(&table->all_alive_mutex);
 		if (table->params[TIMES_TO_EAT] != -1
 			&& all_philos_finished_eating(table))
 			return (true);
+		usleep(1);
 	}
 }
 
@@ -57,5 +54,17 @@ static bool	all_philos_finished_eating(t_table *table)
 	}
 	table->all_finished_eating = true;
 	pthread_mutex_unlock(&table->finished_eating_mutex);
+	return (true);
+}
+
+static bool	all_philos_still_alive(t_table *table)
+{
+	pthread_mutex_lock(&table->all_alive_mutex);
+	if (!table->all_philosophers_alive)
+	{
+		pthread_mutex_unlock(&table->all_alive_mutex);
+		return (false);
+	}
+	pthread_mutex_unlock(&table->all_alive_mutex);
 	return (true);
 }
