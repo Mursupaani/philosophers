@@ -12,9 +12,9 @@
 
 #include "../incl/philo.h"
 
-static bool	p_think(t_philo *philo);
-static bool	p_sleep(t_philo *philo);
-static bool	p_eat(t_philo *philo);
+static bool	philo_think(t_philo *philo);
+static bool	philo_sleep(t_philo *philo);
+static bool	philo_eat(t_philo *philo);
 
 void	*routine(void *arg)
 {
@@ -28,17 +28,17 @@ void	*routine(void *arg)
 		make_odd_philos_wait(philo);
 		if (!all_philos_alive(philo) || all_philosophers_ate_enough(philo))
 			break ;
-		if (!p_eat(philo))
+		if (!philo_eat(philo))
 			break ;
-		if (!p_sleep(philo))
+		if (!philo_sleep(philo))
 			break ;
-		if (!p_think(philo))
+		if (!philo_think(philo))
 			break ;
 	}
 	return (NULL);
 }
 
-static bool	p_think(t_philo *philo)
+static bool	philo_think(t_philo *philo)
 {
 	if (!is_philo_alive(philo) || all_philosophers_ate_enough(philo))
 		return (false);
@@ -46,7 +46,7 @@ static bool	p_think(t_philo *philo)
 	return (true);
 }
 
-static bool	p_eat(t_philo *philo)
+static bool	philo_eat(t_philo *philo)
 {
 	size_t	end_eat;
 
@@ -59,10 +59,7 @@ static bool	p_eat(t_philo *philo)
 	}
 	print_philo_state(philo, EATING);
 	if (philo->times_to_eat > 0)
-	{
-		philo->times_to_eat--;
-		update_finished_eating_flag(philo);
-	}
+		update_eat_times_and_flag(philo);
 	end_eat = elapsed_time(philo) + philo->time_to_eat;
 	philo->last_meal_time = elapsed_time(philo);
 	while (all_philos_alive(philo) && end_eat > elapsed_time(philo))
@@ -71,7 +68,7 @@ static bool	p_eat(t_philo *philo)
 	return (true);
 }
 
-static bool	p_sleep(t_philo *philo)
+static bool	philo_sleep(t_philo *philo)
 {
 	if (!is_philo_alive(philo) || all_philosophers_ate_enough(philo))
 		return (false);

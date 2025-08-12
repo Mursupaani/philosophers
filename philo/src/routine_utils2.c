@@ -31,8 +31,9 @@ bool	is_philo_alive(t_philo *philo)
 	return (true);
 }
 
-void	update_finished_eating_flag(t_philo *philo)
+void	update_eat_times_and_flag(t_philo *philo)
 {
+	philo->times_to_eat--;
 	if (!philo->times_to_eat)
 	{
 		pthread_mutex_lock(&philo->table->finished_eating_mutex);
@@ -56,6 +57,7 @@ void	check_death_during_sleeping(t_philo *philo)
 
 bool	all_philosophers_ate_enough(t_philo *philo)
 {
+	usleep(500);
 	pthread_mutex_lock(&philo->table->finished_eating_mutex);
 	if (philo->table->all_finished_eating)
 	{

@@ -25,6 +25,7 @@
 
 # define ODD_PHILO_WAIT_TIME 500
 # define PHILO_SLEEP_CYCLE_LENGTH 1000
+# define MAX_PHILOS 500
 
 typedef struct s_philosoper	t_philosopher;
 
@@ -117,7 +118,7 @@ void	print_philo_state(t_philo *philo, int state);
 bool	is_philo_alive(t_philo *philo);
 void	return_forks(t_philo *philo);
 bool	init_finished_eating_flags(t_table *table);
-void	update_finished_eating_flag(t_philo *philo);
+void	update_eat_times_and_flag(t_philo *philo);
 void	check_death_during_sleeping(t_philo *philo);
 bool	lock_fork(t_philo *philo, t_philo *philo_to_lock);
 void	free_fork(t_philo *philo_to_free);

@@ -19,7 +19,7 @@ bool	init_philosophers(t_table *table)
 	table->philos
 		= (t_philo *)malloc(sizeof(t_philo) * table->params[PHILO_COUNT]);
 	if (!table->philos)
-		return (free_app_memory(table));
+		return (false);
 	i = -1;
 	while (++i < table->params[PHILO_COUNT])
 	{
@@ -48,16 +48,10 @@ bool	init_forks_mutexes(t_table *table)
 	while (i < table->params[PHILO_COUNT])
 	{
 		if (pthread_mutex_init(&table->philos[i].fork_mutex, NULL))
-		{
-			free_app_memory(table);
 			return (false);
-		}
 		table->num_of_forks_mutexes_created++;
 		if (pthread_mutex_init(&table->philos[i].fork_free_mutex, NULL))
-		{
-			free_app_memory(table);
 			return (false);
-		}
 		table->num_of_forks_free_mutexes_created++;
 		i++;
 	}
@@ -67,28 +61,16 @@ bool	init_forks_mutexes(t_table *table)
 bool	init_table_mutexes(t_table *table)
 {
 	if (pthread_mutex_init(&table->all_alive_mutex, NULL))
-	{
-		free_app_memory(table);
 		return (false);
-	}
 	table->all_alive_mutex_init = true;
 	if (pthread_mutex_init(&table->all_ready_mutex, NULL))
-	{
-		free_app_memory(table);
 		return (false);
-	}
 	table->all_ready_mutex_init = true;
 	if (pthread_mutex_init(&table->time_mutex, NULL))
-	{
-		free_app_memory(table);
 		return (false);
-	}
 	table->time_mutex_init = true;
 	if (pthread_mutex_init(&table->finished_eating_mutex, NULL))
-	{
-		free_app_memory(table);
 		return (false);
-	}
 	table->finised_eating_mutex_init = true;
 	return (true);
 }
@@ -115,10 +97,7 @@ bool	init_finished_eating_flags(t_table *table)
 	size = sizeof(bool) * table->params[PHILO_COUNT];
 	table->finished_eating = (bool *)malloc(size);
 	if (!table->finished_eating)
-	{
-		free_app_memory(table);
 		return (false);
-	}
 	memset(table->finished_eating, 0, size);
 	return (true);
 }

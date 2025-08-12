@@ -11,8 +11,6 @@
 /* ************************************************************************** */
 
 #include "../incl/philo.h"
-#include <stdlib.h>
-#include <unistd.h>
 
 void	print_philo_state(t_philo *philo, int state)
 {

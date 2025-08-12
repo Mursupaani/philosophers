@@ -24,13 +24,12 @@ bool	parse_input_args(int ac, char **av, t_table *table)
 	{
 		temp = ft_atoi_safe(av[i]);
 		if (!temp)
-		{
-			free_app_memory(table);
 			return (false);
-		}
 		table->params[j] = *temp;
 		i++;
 		j++;
 	}
+	if (table->params[PHILO_COUNT] > MAX_PHILOS)
+		return (false);
 	return (true);
 }

@@ -16,6 +16,8 @@ static bool	all_philos_finished_eating(t_table *table);
 
 bool	observer_routine(t_table *table)
 {
+	if (!table)
+		return (false);
 	if (table->num_of_philos_created != table->num_of_threads_created)
 	{
 		pthread_mutex_lock(&table->all_alive_mutex);
@@ -35,7 +37,6 @@ bool	observer_routine(t_table *table)
 		if (table->params[TIMES_TO_EAT] != -1
 			&& all_philos_finished_eating(table))
 			return (true);
-		usleep(1000);
 	}
 }
 
@@ -43,21 +44,17 @@ static bool	all_philos_finished_eating(t_table *table)
 {
 	int	i;
 
-	if (!table)
-		return (false);
 	i = 0;
+	pthread_mutex_lock(&table->finished_eating_mutex);
 	while (i < table->num_of_philos_created)
 	{
-		pthread_mutex_lock(&table->finished_eating_mutex);
 		if (!table->finished_eating[i])
 		{
 			pthread_mutex_unlock(&table->finished_eating_mutex);
 			return (false);
 		}
-		pthread_mutex_unlock(&table->finished_eating_mutex);
 		i++;
 	}
-	pthread_mutex_lock(&table->finished_eating_mutex);
 	table->all_finished_eating = true;
 	pthread_mutex_unlock(&table->finished_eating_mutex);
 	return (true);
