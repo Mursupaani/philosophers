@@ -125,6 +125,6 @@ void	free_fork(t_philo *philo_to_free);
 bool	take_forks(t_philo *philo);
 bool	all_philosophers_ate_enough(t_philo *philo);
 void	ft_putstr_fd(char *s, int fd);
-int		free_memory_and_print_error_message(t_table *table, int error);
+int		print_error_and_free_memory(t_table *table, int error);
 
 #endif

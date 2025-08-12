@@ -37,7 +37,7 @@ void	print_philo_state(t_philo *philo, int state)
 	pthread_mutex_unlock(&philo->table->finished_eating_mutex);
 }
 
-int	free_memory_and_print_error_message(t_table *table, int error)
+int	print_error_and_free_memory(t_table *table, int error)
 {
 	if (error == ERR_ARG_COUNT)
 		ft_putstr_fd("Error arg count\n", STDERR_FILENO);

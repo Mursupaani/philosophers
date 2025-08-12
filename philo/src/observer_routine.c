@@ -33,7 +33,7 @@ bool	observer_routine(t_table *table)
 		if (table->params[TIMES_TO_EAT] != -1
 			&& all_philos_finished_eating(table))
 			return (true);
-		usleep(1);
+		usleep(100);
 	}
 }
 

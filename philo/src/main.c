@@ -19,22 +19,22 @@ int	main(int ac, char *av[])
 	t_table		*table;
 
 	if (ac < 5 || ac > 6)
-		return (free_memory_and_print_error_message(NULL, ERR_ARG_COUNT));
+		return (print_error_and_free_memory(NULL, ERR_ARG_COUNT));
 	table = init_table();
 	if (!table)
-		return (free_memory_and_print_error_message(table, ERR_INIT_TABLE));
+		return (print_error_and_free_memory(table, ERR_INIT_TABLE));
 	if (!parse_input_args(ac, av, table) || !table->params[PHILO_COUNT])
-		return (free_memory_and_print_error_message(table, ERR_PARSING));
+		return (print_error_and_free_memory(table, ERR_PARSING));
 	if (!init_philosophers(table))
-		return (free_memory_and_print_error_message(table, ERR_INIT_PHILO));
+		return (print_error_and_free_memory(table, ERR_INIT_PHILO));
 	if (!init_forks_mutexes(table) || !init_table_mutexes(table))
-		return (free_memory_and_print_error_message(table, ERR_INIT_MUTEXES));
+		return (print_error_and_free_memory(table, ERR_INIT_MUTEXES));
 	if (!init_finished_eating_flags(table))
-		return (free_memory_and_print_error_message(table, ERR_INIT_FINISH_EAT));
+		return (print_error_and_free_memory(table, ERR_INIT_FINISH_EAT));
 	if (!start_routines(table))
-		return (free_memory_and_print_error_message(table, ERR_PHILO_THREADS));
+		return (print_error_and_free_memory(table, ERR_PHILO_THREADS));
 	if (!observer_routine(table))
-		return (free_memory_and_print_error_message(table, ERR_OBSERVER_THREAD));
+		return (print_error_and_free_memory(table, ERR_OBSERVER_THREAD));
 	free_app_memory(table);
 	return (EXIT_SUCCESS);
 }

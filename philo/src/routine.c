@@ -57,9 +57,9 @@ static bool	philo_eat(t_philo *philo)
 		return_forks(philo);
 		return (false);
 	}
-	print_philo_state(philo, EATING);
 	if (philo->times_to_eat > 0)
 		update_eat_times_and_flag(philo);
+	print_philo_state(philo, EATING);
 	end_eat = elapsed_time(philo) + philo->time_to_eat;
 	philo->last_meal_time = elapsed_time(philo);
 	while (all_philos_alive(philo) && end_eat > elapsed_time(philo))
