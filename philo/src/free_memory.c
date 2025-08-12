@@ -21,8 +21,8 @@ bool	free_app_memory(t_table *table)
 	if (!table)
 		return (false);
 	join_philosophers_to_main(table);
-	destroy_forks_mutexes(table);
 	destroy_table_mutexes(table);
+	destroy_forks_mutexes(table);
 	if (table->philos)
 		free(table->philos);
 	if (table->finished_eating)
@@ -59,6 +59,7 @@ static void	destroy_forks_mutexes(t_table *table)
 			printf("Failed to destroy fork mutex #%d\n", i + 1);
 		i++;
 	}
+	i = 0;
 	while (i < table->num_of_forks_free_mutexes_created)
 	{
 		if (pthread_mutex_destroy(&table->philos[i].fork_free_mutex))
