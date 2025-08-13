@@ -40,7 +40,7 @@ void	*routine(void *arg)
 
 static bool	philo_think(t_philo *philo)
 {
-	if (!is_philo_alive(philo) || all_philosophers_ate_enough(philo))
+	if (!is_philo_alive(philo))
 		return (false);
 	print_philo_state(philo, THINKING);
 	return (true);
@@ -52,14 +52,14 @@ static bool	philo_eat(t_philo *philo)
 
 	if (!take_forks(philo))
 		return (false);
-	if (!is_philo_alive(philo) || all_philosophers_ate_enough(philo))
+	if (!is_philo_alive(philo))
 	{
 		return_forks(philo);
 		return (false);
 	}
+	print_philo_state(philo, EATING);
 	if (philo->times_to_eat > 0)
 		update_eat_times_and_flag(philo);
-	print_philo_state(philo, EATING);
 	end_eat = elapsed_time(philo) + philo->time_to_eat;
 	philo->last_meal_time = elapsed_time(philo);
 	while (all_philos_alive(philo) && end_eat > elapsed_time(philo))
@@ -70,7 +70,7 @@ static bool	philo_eat(t_philo *philo)
 
 static bool	philo_sleep(t_philo *philo)
 {
-	if (!is_philo_alive(philo) || all_philosophers_ate_enough(philo))
+	if (!is_philo_alive(philo))
 		return (false);
 	print_philo_state(philo, SLEEPING);
 	check_death_during_sleeping(philo);
