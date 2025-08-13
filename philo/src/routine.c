@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../incl/philo.h"
+#include "philo.h"
 
 static bool	philo_think(t_philo *philo);
 static bool	philo_sleep(t_philo *philo);

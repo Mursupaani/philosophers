@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../incl/philo.h"
+#include "philo.h"
 
 static void	destroy_end_condition_mutexes(t_table *table);
 static void	destroy_fork_mutexes(t_table *table);

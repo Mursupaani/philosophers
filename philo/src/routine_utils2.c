@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../incl/philo.h"
+#include "philo.h"
 
 bool	is_philo_alive(t_philo *philo)
 {

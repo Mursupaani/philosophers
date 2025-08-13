@@ -27,7 +27,7 @@ SRC 		= ./src/main.c \
 			  ./src/ft_putstr_fd.c
 OBJS 		= $(SRC:%.c=%.o)
 HEADER		= ./incl/philo.h
-C_FLAGS		= -Wall -Wextra -Werror -pthread -g
+C_FLAGS		= -Wall -Wextra -Werror -pthread -g -I$(INCL_DIR)
 
 all: $(NAME)
 

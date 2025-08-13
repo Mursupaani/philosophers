@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../incl/philo.h"
+#include "philo.h"
 
 bool	init_philosophers(t_table *table)
 {

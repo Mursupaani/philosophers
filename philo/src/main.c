@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../incl/philo.h"
+#include "philo.h"
 
 static bool	start_routines(t_table *table);
 

@@ -10,8 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../incl/philo.h"
-#include <pthread.h>
+#include "philo.h"
 
 static bool	all_philos_finished_eating(t_table *table);
 static bool	all_philos_still_alive(t_table *table);
@@ -71,9 +70,9 @@ static bool	all_philos_still_alive(t_table *table)
 		pthread_mutex_lock(&table->philos[i].alive_mutex);
 		if (!table->philos[i].alive)
 		{
+			pthread_mutex_unlock(&table->philos[i].alive_mutex);
 			pthread_mutex_lock(&table->all_alive_mutex);
 			table->all_philosophers_alive = false;
-			pthread_mutex_unlock(&table->philos[i].alive_mutex);
 			pthread_mutex_unlock(&table->all_alive_mutex);
 			print_philo_dead(&table->philos[i]);
 			return (false);
