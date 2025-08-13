@@ -44,18 +44,20 @@ static bool	all_philos_finished_eating(t_table *table)
 	int	i;
 
 	i = 0;
-	pthread_mutex_lock(&table->finished_eating_mutex);
 	while (i < table->num_of_philos_created)
 	{
-		if (!table->finished_eating[i])
+		pthread_mutex_lock(&table->philos[i].finished_eating_mutex);
+		if (!table->philos[i].finished_eating)
 		{
-			pthread_mutex_unlock(&table->finished_eating_mutex);
+			pthread_mutex_unlock(&table->philos[i].finished_eating_mutex);
 			return (false);
 		}
+		pthread_mutex_unlock(&table->philos[i].finished_eating_mutex);
 		i++;
 	}
+	pthread_mutex_lock(&table->all_finished_eating_mutex);
 	table->all_finished_eating = true;
-	pthread_mutex_unlock(&table->finished_eating_mutex);
+	pthread_mutex_unlock(&table->all_finished_eating_mutex);
 	return (true);
 }
 
@@ -86,19 +88,3 @@ static void	print_philo_dead(t_philo *philo)
 {
 	printf("%lu %d died\n", elapsed_time(philo), philo->n);
 }
-
-// static bool	all_philos_still_alive(t_table *table)
-// {
-// 	pthread_mutex_lock(&table->all_alive_mutex);
-// 	pthread_mutex_lock(&table->a_philo_is_dead_mutex);
-// 	if (table->a_philo_is_dead)
-// 	{
-// 		table->all_philosophers_alive = false;
-// 		pthread_mutex_unlock(&table->all_alive_mutex);
-// 		pthread_mutex_unlock(&table->a_philo_is_dead_mutex);
-// 		return (false);
-// 	}
-// 	pthread_mutex_unlock(&table->all_alive_mutex);
-// 	pthread_mutex_unlock(&table->a_philo_is_dead_mutex);
-// 	return (true);
-// }

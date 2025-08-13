@@ -57,6 +57,9 @@ bool	init_philo_mutexes(t_table *table)
 		if (pthread_mutex_init(&table->philos[i].alive_mutex, NULL))
 			return (false);
 		table->num_of_alive_mutexes_created++;
+		if (pthread_mutex_init(&table->philos[i].finished_eating_mutex, NULL))
+			return (false);
+		table->num_of_finished_eating_mutexes_created++;
 		i++;
 	}
 	return (true);
@@ -73,12 +76,9 @@ bool	init_table_mutexes(t_table *table)
 	if (pthread_mutex_init(&table->time_mutex, NULL))
 		return (false);
 	table->time_mutex_init = true;
-	if (pthread_mutex_init(&table->finished_eating_mutex, NULL))
+	if (pthread_mutex_init(&table->all_finished_eating_mutex, NULL))
 		return (false);
-	table->finised_eating_mutex_init = true;
-	if (pthread_mutex_init(&table->philo_dead_mutex, NULL))
-		return (false);
-	table->philo_dead_mutex_init = true;
+	table->all_finised_eating_mutex_init = true;
 	return (true);
 }
 
@@ -93,20 +93,4 @@ t_table	*init_table(void)
 	table->params[TIMES_TO_EAT] = -1;
 	table->all_philosophers_alive = true;
 	return (table);
-}
-
-bool	init_end_condition_flags(t_table *table)
-{
-	size_t	size;
-
-	if (!table)
-		return (false);
-	size = sizeof(bool) * table->params[PHILO_COUNT];
-	table->finished_eating = (bool *)malloc(size);
-	table->philo_dead = (bool *)malloc(size);
-	if (!table->philo_dead || !table->finished_eating)
-		return (false);
-	memset(table->finished_eating, 0, size);
-	memset(table->philo_dead, 0, size);
-	return (true);
 }

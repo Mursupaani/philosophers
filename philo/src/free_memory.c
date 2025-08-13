@@ -12,7 +12,8 @@
 
 #include "../incl/philo.h"
 
-static void	destroy_philo_mutexes(t_table *table);
+static void	destroy_end_condition_mutexes(t_table *table);
+static void	destroy_fork_mutexes(t_table *table);
 static void	join_philosophers_to_main(t_table *table);
 static void	destroy_table_mutexes(t_table *table);
 
@@ -22,13 +23,10 @@ bool	free_app_memory(t_table *table)
 		return (false);
 	join_philosophers_to_main(table);
 	destroy_table_mutexes(table);
-	destroy_philo_mutexes(table);
+	destroy_fork_mutexes(table);
+	destroy_end_condition_mutexes(table);
 	if (table->philos)
 		free(table->philos);
-	if (table->finished_eating)
-		free(table->finished_eating);
-	if (table->philo_dead)
-		free(table->philo_dead);
 	free(table);
 	return (false);
 }
@@ -48,7 +46,7 @@ static void	join_philosophers_to_main(t_table *table)
 	}
 }
 
-static void	destroy_philo_mutexes(t_table *table)
+static void	destroy_fork_mutexes(t_table *table)
 {
 	int	i;
 
@@ -68,10 +66,25 @@ static void	destroy_philo_mutexes(t_table *table)
 			printf("Failed to destroy fork free mutex #%d\n", i + 1);
 		i++;
 	}
+}
+
+static void	destroy_end_condition_mutexes(t_table *table)
+{
+	int	i;
+
+	if (!table && !table->philos)
+		return ;
 	i = 0;
 	while (i < table->num_of_alive_mutexes_created)
 	{
 		if (pthread_mutex_destroy(&table->philos[i].alive_mutex))
+			printf("Failed to destroy alive mutex #%d\n", i + 1);
+		i++;
+	}
+	i = 0;
+	while (i < table->num_of_finished_eating_mutexes_created)
+	{
+		if (pthread_mutex_destroy(&table->philos[i].finished_eating_mutex))
 			printf("Failed to destroy alive mutex #%d\n", i + 1);
 		i++;
 	}
@@ -90,10 +103,7 @@ static void	destroy_table_mutexes(t_table *table)
 	if (table->time_mutex_init
 		&& pthread_mutex_destroy(&table->time_mutex))
 		printf("Failed to destroy time mutex\n");
-	if (table->finised_eating_mutex_init
-		&& pthread_mutex_destroy(&table->finished_eating_mutex))
-		printf("Failed to destroy finished eating mutex\n");
-	if (table->philo_dead_mutex_init
-		&& pthread_mutex_destroy(&table->philo_dead_mutex))
-		printf("Failed to destroy a philo is dead mutex\n");
+	if (table->all_finised_eating_mutex_init
+		&& pthread_mutex_destroy(&table->all_finished_eating_mutex))
+		printf("Failed to destroy all finished eating mutex\n");
 }

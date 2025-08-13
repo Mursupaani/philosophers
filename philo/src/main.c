@@ -23,14 +23,14 @@ int	main(int ac, char *av[])
 	table = init_table();
 	if (!table)
 		return (print_error_and_free_memory(table, ERR_INIT_TABLE));
-	if (!parse_input_args(ac, av, table) || !table->params[PHILO_COUNT])
+	if (!parse_input_args(ac, av, table))
 		return (print_error_and_free_memory(table, ERR_PARSING));
+	if (table->params[PHILO_COUNT] > MAX_PHILOS || !table->params[PHILO_COUNT])
+		return (print_error_and_free_memory(table, ERR_PHILO_COUNT));
 	if (!init_philosophers(table))
 		return (print_error_and_free_memory(table, ERR_INIT_PHILO));
 	if (!init_philo_mutexes(table) || !init_table_mutexes(table))
 		return (print_error_and_free_memory(table, ERR_INIT_MUTEXES));
-	if (!init_end_condition_flags(table))
-		return (print_error_and_free_memory(table, ERR_INIT_FINISH_EAT));
 	if (!start_routines(table))
 		return (print_error_and_free_memory(table, ERR_PHILO_THREADS));
 	if (!observer_routine(table))

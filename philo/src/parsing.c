@@ -29,7 +29,5 @@ bool	parse_input_args(int ac, char **av, t_table *table)
 		i++;
 		j++;
 	}
-	if (table->params[PHILO_COUNT] > MAX_PHILOS)
-		return (false);
 	return (true);
 }
