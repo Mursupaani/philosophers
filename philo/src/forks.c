@@ -27,11 +27,12 @@ bool	take_forks(t_philo *philo)
 		philo_1 = &philo->table->philos[philo->index_next];
 		philo_2 = philo;
 	}
-	// FIXME: FIX THIS!!!
-	if (!lock_fork(philo, philo_1) || !is_philo_alive(philo))
+	if (!is_philo_alive(philo) || !all_philos_alive(philo)
+		|| !lock_fork(philo, philo_1))
 		return (false);
 	print_philo_state(philo, TAKE_FORK);
-	if (!lock_fork(philo, philo_2) || !is_philo_alive(philo))
+	if (!is_philo_alive(philo) || !all_philos_alive(philo)
+		|| !lock_fork(philo, philo_2))
 	{
 		free_fork(philo_1);
 		return (false);

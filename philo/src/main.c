@@ -27,9 +27,9 @@ int	main(int ac, char *av[])
 		return (print_error_and_free_memory(table, ERR_PARSING));
 	if (!init_philosophers(table))
 		return (print_error_and_free_memory(table, ERR_INIT_PHILO));
-	if (!init_forks_mutexes(table) || !init_table_mutexes(table))
+	if (!init_philo_mutexes(table) || !init_table_mutexes(table))
 		return (print_error_and_free_memory(table, ERR_INIT_MUTEXES));
-	if (!init_finished_eating_flags(table))
+	if (!init_end_condition_flags(table))
 		return (print_error_and_free_memory(table, ERR_INIT_FINISH_EAT));
 	if (!start_routines(table))
 		return (print_error_and_free_memory(table, ERR_PHILO_THREADS));

@@ -21,7 +21,6 @@
 # include <stdbool.h>
 # include <limits.h>
 # include <string.h>
-# include <signal.h>
 
 # define ODD_PHILO_WAIT_TIME 500
 # define PHILO_SLEEP_CYCLE_LENGTH 1000
@@ -47,6 +46,9 @@ typedef struct s_table
 	pthread_mutex_t	finished_eating_mutex;
 	bool			finised_eating_mutex_init;
 	bool			*finished_eating;
+	pthread_mutex_t	philo_dead_mutex;
+	bool			philo_dead_mutex_init;
+	bool			*philo_dead;
 	bool			all_finished_eating;
 	t_philosopher	*philos;
 	struct timeval	start_time;
@@ -55,6 +57,7 @@ typedef struct s_table
 typedef struct s_philosoper
 {
 	pthread_t		philo;
+	bool			alive;
 	pthread_mutex_t	fork_mutex;
 	bool			fork_free;
 	pthread_mutex_t	fork_free_mutex;
@@ -109,7 +112,7 @@ size_t	elapsed_time(t_philo *philo);
 bool	init_table_mutexes(t_table *table);
 t_table	*init_table(void);
 bool	init_philosophers(t_table *table);
-bool	init_forks_mutexes(t_table *table);
+bool	init_philo_mutexes(t_table *table);
 size_t	ms_between_meals(t_philo *philo);
 void	make_odd_philos_wait(t_philo *philo);
 void	wait_for_philosophers_to_be_ready(t_philo *philo);
@@ -117,7 +120,8 @@ bool	all_philos_alive(t_philo *philo);
 void	print_philo_state(t_philo *philo, int state);
 bool	is_philo_alive(t_philo *philo);
 void	return_forks(t_philo *philo);
-bool	init_finished_eating_flags(t_table *table);
+// bool	init_finished_eating_flags(t_table *table);
+bool	init_end_condition_flags(t_table *table);
 void	update_eat_times_and_flag(t_philo *philo);
 void	check_death_during_sleeping(t_philo *philo);
 bool	lock_fork(t_philo *philo, t_philo *philo_to_lock);

@@ -14,22 +14,35 @@
 
 bool	is_philo_alive(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->table->all_alive_mutex);
-	if (ms_between_meals(philo) >= philo->time_to_die
-		|| !philo->table->all_philosophers_alive)
+	if (ms_between_meals(philo) >= philo->time_to_die)
 	{
-		if (philo->table->all_philosophers_alive)
-		{
-			pthread_mutex_unlock(&philo->table->all_alive_mutex);
-			print_philo_state(philo, DEAD);
-			return (false);
-		}
-		pthread_mutex_unlock(&philo->table->all_alive_mutex);
+		pthread_mutex_lock(&philo->table->philo_dead_mutex);
+		philo->table->philo_dead[philo->index] = true;
+		pthread_mutex_unlock(&philo->table->philo_dead_mutex);
+		// print_philo_state(philo, DEAD);
 		return (false);
 	}
-	pthread_mutex_unlock(&philo->table->all_alive_mutex);
 	return (true);
 }
+
+// bool	is_philo_alive(t_philo *philo)
+// {
+// 	pthread_mutex_lock(&philo->table->all_alive_mutex);
+// 	if (ms_between_meals(philo) >= philo->time_to_die
+// 		|| !philo->table->all_philosophers_alive)
+// 	{
+// 		if (philo->table->all_philosophers_alive)
+// 		{
+// 			pthread_mutex_unlock(&philo->table->all_alive_mutex);
+// 			print_philo_state(philo, DEAD);
+// 			return (false);
+// 		}
+// 		pthread_mutex_unlock(&philo->table->all_alive_mutex);
+// 		return (false);
+// 	}
+// 	pthread_mutex_unlock(&philo->table->all_alive_mutex);
+// 	return (true);
+// }
 
 void	update_eat_times_and_flag(t_philo *philo)
 {

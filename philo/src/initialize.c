@@ -28,6 +28,7 @@ bool	init_philosophers(t_table *table)
 		table->philos[i].time_to_sleep = table->params[TIME_TO_SLEEP];
 		table->philos[i].times_to_eat = table->params[TIMES_TO_EAT];
 		table->philos[i].fork_free = true;
+		table->philos[i].alive = true;
 		table->philos[i].table = table;
 		table->philos[i].index = i;
 		table->philos[i].n = i + 1;
@@ -40,7 +41,7 @@ bool	init_philosophers(t_table *table)
 	return (true);
 }
 
-bool	init_forks_mutexes(t_table *table)
+bool	init_philo_mutexes(t_table *table)
 {
 	int	i;
 
@@ -72,6 +73,9 @@ bool	init_table_mutexes(t_table *table)
 	if (pthread_mutex_init(&table->finished_eating_mutex, NULL))
 		return (false);
 	table->finised_eating_mutex_init = true;
+	if (pthread_mutex_init(&table->philo_dead_mutex, NULL))
+		return (false);
+	table->philo_dead_mutex_init = true;
 	return (true);
 }
 
@@ -88,7 +92,7 @@ t_table	*init_table(void)
 	return (table);
 }
 
-bool	init_finished_eating_flags(t_table *table)
+bool	init_end_condition_flags(t_table *table)
 {
 	size_t	size;
 
@@ -96,8 +100,10 @@ bool	init_finished_eating_flags(t_table *table)
 		return (false);
 	size = sizeof(bool) * table->params[PHILO_COUNT];
 	table->finished_eating = (bool *)malloc(size);
-	if (!table->finished_eating)
+	table->philo_dead = (bool *)malloc(size);
+	if (!table->philo_dead || !table->finished_eating)
 		return (false);
 	memset(table->finished_eating, 0, size);
+	memset(table->philo_dead, 0, size);
 	return (true);
 }

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../incl/philo.h"
+#include <pthread.h>
 
 static void	destroy_forks_mutexes(t_table *table);
 static void	join_philosophers_to_main(t_table *table);
@@ -27,6 +28,8 @@ bool	free_app_memory(t_table *table)
 		free(table->philos);
 	if (table->finished_eating)
 		free(table->finished_eating);
+	if (table->philo_dead)
+		free(table->philo_dead);
 	free(table);
 	return (false);
 }
@@ -84,4 +87,7 @@ static void	destroy_table_mutexes(t_table *table)
 	if (table->finised_eating_mutex_init
 		&& pthread_mutex_destroy(&table->finished_eating_mutex))
 		printf("Failed to destroy finished eating mutex\n");
+	if (table->philo_dead_mutex_init
+		&& pthread_mutex_destroy(&table->philo_dead_mutex))
+		printf("Failed to destroy a philo is dead mutex\n");
 }

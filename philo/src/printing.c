@@ -27,11 +27,8 @@ void	print_philo_state(t_philo *philo, int state)
 			printf("%lu %d has taken a fork\n", elapsed_time(philo), philo->n);
 		else if (state == SLEEPING)
 			printf("%lu %d is sleeping\n", elapsed_time(philo), philo->n);
-		else if (state == DEAD)
-		{
-			philo->table->all_philosophers_alive = false;
-			printf("%lu %d died\n", elapsed_time(philo), philo->n);
-		}
+		// else if (state == DEAD)
+			// printf("%lu %d died\n", elapsed_time(philo), philo->n);
 	}
 	pthread_mutex_unlock(&philo->table->all_alive_mutex);
 	pthread_mutex_unlock(&philo->table->finished_eating_mutex);
