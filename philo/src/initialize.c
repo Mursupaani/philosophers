@@ -54,6 +54,9 @@ bool	init_philo_mutexes(t_table *table)
 		if (pthread_mutex_init(&table->philos[i].fork_free_mutex, NULL))
 			return (false);
 		table->num_of_forks_free_mutexes_created++;
+		if (pthread_mutex_init(&table->philos[i].alive_mutex, NULL))
+			return (false);
+		table->num_of_alive_mutexes_created++;
 		i++;
 	}
 	return (true);

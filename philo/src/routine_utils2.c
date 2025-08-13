@@ -16,10 +16,9 @@ bool	is_philo_alive(t_philo *philo)
 {
 	if (ms_between_meals(philo) >= philo->time_to_die)
 	{
-		pthread_mutex_lock(&philo->table->philo_dead_mutex);
-		philo->table->philo_dead[philo->index] = true;
-		pthread_mutex_unlock(&philo->table->philo_dead_mutex);
-		// print_philo_state(philo, DEAD);
+		pthread_mutex_lock(&philo->alive_mutex);
+		philo->alive = false;
+		pthread_mutex_unlock(&philo->alive_mutex);
 		return (false);
 	}
 	return (true);

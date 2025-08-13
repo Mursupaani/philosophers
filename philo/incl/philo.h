@@ -35,6 +35,7 @@ typedef struct s_table
 	int				num_of_forks_mutexes_created;
 	int				num_of_forks_free_mutexes_created;
 	int				num_of_threads_created;
+	int				num_of_alive_mutexes_created;
 	pthread_mutex_t	all_alive_mutex;
 	bool			all_alive_mutex_init;
 	bool			all_philosophers_alive;
@@ -57,6 +58,7 @@ typedef struct s_table
 typedef struct s_philosoper
 {
 	pthread_t		philo;
+	pthread_mutex_t	alive_mutex;
 	bool			alive;
 	pthread_mutex_t	fork_mutex;
 	bool			fork_free;

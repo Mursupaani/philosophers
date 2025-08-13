@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "../incl/philo.h"
+#include <pthread.h>
 
 static bool	all_philos_finished_eating(t_table *table);
 static bool	all_philos_still_alive(t_table *table);
@@ -63,21 +64,21 @@ static bool	all_philos_still_alive(t_table *table)
 	int	i;
 
 	i = 0;
-	pthread_mutex_lock(&table->philo_dead_mutex);
 	while (i < table->num_of_philos_created)
 	{
-		if (table->philo_dead[i])
+		pthread_mutex_lock(&table->philos[i].alive_mutex);
+		if (!table->philos[i].alive)
 		{
 			pthread_mutex_lock(&table->all_alive_mutex);
 			table->all_philosophers_alive = false;
-			pthread_mutex_unlock(&table->philo_dead_mutex);
+			pthread_mutex_unlock(&table->philos[i].alive_mutex);
 			pthread_mutex_unlock(&table->all_alive_mutex);
 			print_philo_dead(&table->philos[i]);
 			return (false);
 		}
+		pthread_mutex_unlock(&table->philos[i].alive_mutex);
 		i++;
 	}
-	pthread_mutex_unlock(&table->philo_dead_mutex);
 	return (true);
 }
 
