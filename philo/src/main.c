@@ -49,8 +49,8 @@ static bool	start_routines(t_table *table)
 	i = 0;
 	while (i < table->params[PHILO_COUNT])
 	{
-		if (pthread_create( &table->philos[i].philo, NULL,
-					 routine, &table->philos[i]))
+		if (pthread_create(&table->philos[i].philo, NULL,
+				routine, &table->philos[i]))
 		{
 			free_app_memory(table);
 			return (false);
