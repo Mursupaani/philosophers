@@ -57,11 +57,13 @@ static bool	start_routines(t_table *table)
 		table->num_of_threads_created++;
 		i++;
 	}
+	pthread_mutex_lock(&table->time_mutex);
 	if (gettimeofday(&table->start_time, NULL))
 	{
 		free_app_memory(table);
 		return (false);
 	}
+	pthread_mutex_unlock(&table->time_mutex);
 	pthread_mutex_lock(&table->all_ready_mutex);
 	table->all_philosophers_ready = true;
 	pthread_mutex_unlock(&table->all_ready_mutex);

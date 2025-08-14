@@ -12,66 +12,34 @@
 
 #include "philo.h"
 
-static bool	print_state(t_philo *philo, int state);
-static char	*make_str(int strlen, const char *ms_elapsed, const char *philo_n, int state);
 static void	add_msg_to_str(char *str, int state);
 static int	ft_strlen(const char *str);
 
-void	print_philo_state(t_philo *philo, int state)
+bool	print_philo_state(t_philo *philo, int state)
 {
+	char		buf[32];
+	int			len;
+	pthread_mutex_lock(&philo->table->all_ready_mutex);
+	len = ft_itoa_to_buf(elapsed_time(philo), buf, 32);
+	buf[len++] = ' ';
+	len += ft_itoa_to_buf(philo->n, &buf[len], 32);
+	buf[len++] = ' ';
+	add_msg_to_str(&buf[len], state);
 	if (philo->table->all_philosophers_alive
 		&& !philo->table->all_finished_eating)
-			print_state(philo, state);
-}
-
-static bool	print_state(t_philo *philo, int state)
-{
-	const char	*ms_elapsed = ft_itoa(elapsed_time(philo));
-	const char	*philo_n = ft_itoa(philo->n);
-	int			strlen;
-	char		*str;
-
-	if (!ms_elapsed || !philo_n)
-		return (false);
-	strlen = ft_strlen(ms_elapsed) + ft_strlen(philo_n) + 2;
-	if (state == THINKING)
-		strlen += 13;
-	else if (state == EATING)
-		strlen += 11;
-	else if (state == TAKE_FORK)
-		strlen += 18;
-	else if (state == SLEEPING)
-		strlen += 12;
-	str = make_str(strlen, ms_elapsed, philo_n, state);
-	write(1, str, strlen);
+		write(1, buf, ft_strlen(buf));
+	pthread_mutex_unlock(&philo->table->all_ready_mutex);
 	return (true);
 }
 
-static char	*make_str(int strlen, const char *ms_elapsed, const char *philo_n, int state)
+static int	ft_strlen(const char *str)
 {
-	char	*str;
-	int		i;
+	int	i;
 
-	str = malloc(strlen);
-	if (!str)
-		return (NULL);
 	i = 0;
-	while (*ms_elapsed)
-	{
-		str[i] = *ms_elapsed;
+	while (str[i])
 		i++;
-		ms_elapsed++;
-	}
-	str[i++] = ' '; 
-	while (*philo_n)
-	{
-		str[i] = *philo_n;
-		i++;
-		philo_n++;
-	}
-	str[i++] = ' '; 
-	add_msg_to_str(&str[i], state);
-	return (str);
+	return (i);
 }
 
 static void	add_msg_to_str(char *str, int state)
@@ -97,14 +65,4 @@ static void	add_msg_to_str(char *str, int state)
 		msg++;
 	}
 	*str = '\0';
-}
-
-static int	ft_strlen(const char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
 }

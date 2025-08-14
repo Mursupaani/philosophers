@@ -34,24 +34,19 @@ bool	observer_routine(t_table *table)
 		if (table->params[TIMES_TO_EAT] != -1
 			&& all_philos_finished_eating(table))
 			return (true);
-		usleep(1);
+		usleep(10);
 	}
 }
 
 static bool	all_philos_finished_eating(t_table *table)
 {
-	 int	i;
+	int	i;
 
 	i = 0;
 	while (i < table->num_of_philos_created)
 	{
-		pthread_mutex_lock(&table->philos[i].finished_eating_mutex);
 		if (!table->philos[i].finished_eating)
-		{
-			pthread_mutex_unlock(&table->philos[i].finished_eating_mutex);
 			return (false);
-		}
-		pthread_mutex_unlock(&table->philos[i].finished_eating_mutex);
 		i++;
 	}
 	pthread_mutex_lock(&table->all_finished_eating_mutex);
@@ -67,17 +62,14 @@ static bool	all_philos_still_alive(t_table *table)
 	i = 0;
 	while (i < table->num_of_philos_created)
 	{
-		pthread_mutex_lock(&table->philos[i].alive_mutex);
 		if (!table->philos[i].alive)
 		{
-			pthread_mutex_unlock(&table->philos[i].alive_mutex);
 			pthread_mutex_lock(&table->all_alive_mutex);
 			table->all_philosophers_alive = false;
 			pthread_mutex_unlock(&table->all_alive_mutex);
 			print_philo_dead(&table->philos[i]);
 			return (false);
 		}
-		pthread_mutex_unlock(&table->philos[i].alive_mutex);
 		i++;
 	}
 	return (true);

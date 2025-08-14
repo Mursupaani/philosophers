@@ -67,18 +67,18 @@ bool	init_philo_mutexes(t_table *table)
 
 bool	init_table_mutexes(t_table *table)
 {
-	// if (pthread_mutex_init(&table->all_alive_mutex, NULL))
-	// 	return (false);
-	// table->all_alive_mutex_init = true;
-	// if (pthread_mutex_init(&table->all_ready_mutex, NULL))
-		// return (false);
-	// table->all_ready_mutex_init = true;
+	if (pthread_mutex_init(&table->all_alive_mutex, NULL))
+		return (false);
+	table->all_alive_mutex_init = true;
+	if (pthread_mutex_init(&table->all_ready_mutex, NULL))
+		return (false);
+	table->all_ready_mutex_init = true;
 	if (pthread_mutex_init(&table->time_mutex, NULL))
 		return (false);
 	table->time_mutex_init = true;
-	// if (pthread_mutex_init(&table->all_finished_eating_mutex, NULL))
-		// return (false);
-	// table->all_finised_eating_mutex_init = true;
+	if (pthread_mutex_init(&table->all_finished_eating_mutex, NULL))
+		return (false);
+	table->all_finised_eating_mutex_init = true;
 	return (true);
 }
 

@@ -29,9 +29,9 @@ void	update_eat_times_and_flag(t_philo *philo)
 	philo->times_to_eat--;
 	if (!philo->times_to_eat)
 	{
-		pthread_mutex_lock(&philo->finished_eating_mutex);
+		// pthread_mutex_lock(&philo->finished_eating_mutex);
 		philo->finished_eating = true;
-		pthread_mutex_unlock(&philo->finished_eating_mutex);
+		// pthread_mutex_unlock(&philo->finished_eating_mutex);
 	}
 }
 
@@ -50,12 +50,7 @@ void	check_death_during_sleeping(t_philo *philo)
 
 bool	all_philosophers_ate_enough(t_philo *philo)
 {
-	// pthread_mutex_lock(&philo->table->all_finished_eating_mutex);
 	if (philo->table->all_finished_eating)
-	{
-		// pthread_mutex_unlock(&philo->table->all_finished_eating_mutex);
 		return (true);
-	}
-	// pthread_mutex_unlock(&philo->table->all_finished_eating_mutex);
 	return (false);
 }

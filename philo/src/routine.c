@@ -15,6 +15,7 @@
 static bool	philo_think(t_philo *philo);
 static bool	philo_sleep(t_philo *philo);
 static bool	philo_eat(t_philo *philo);
+static void	store_start_time(t_philo *philo);
 
 void	*routine(void *arg)
 {
@@ -22,6 +23,7 @@ void	*routine(void *arg)
 
 	philo = (t_philo *)arg;
 	wait_for_philosophers_to_be_ready(philo);
+	store_start_time(philo);
 	philo->last_meal_time = elapsed_time(philo);
 	while (true)
 	{
@@ -75,4 +77,12 @@ static bool	philo_sleep(t_philo *philo)
 	print_philo_state(philo, SLEEPING);
 	check_death_during_sleeping(philo);
 	return (true);
+}
+
+static void	store_start_time(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->table->time_mutex);
+	philo->start_time.tv_sec = philo->table->start_time.tv_sec;
+	philo->start_time.tv_usec = philo->table->start_time.tv_usec;
+	pthread_mutex_unlock(&philo->table->time_mutex);
 }

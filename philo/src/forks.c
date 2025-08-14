@@ -66,15 +66,14 @@ bool	lock_fork(t_philo *philo, t_philo *philo_to_lock)
 	{
 		if (!is_philo_alive(philo) || !all_philos_alive(philo))
 			return (false);
-		pthread_mutex_lock(&philo_to_lock->fork_free_mutex);
 		if (philo_to_lock->fork_free)
 		{
+			pthread_mutex_lock(&philo_to_lock->fork_free_mutex);
 			philo_to_lock->fork_free = false;
 			pthread_mutex_unlock(&philo_to_lock->fork_free_mutex);
 			pthread_mutex_lock(&philo_to_lock->fork_mutex);
 			return (true);
 		}
-		pthread_mutex_unlock(&philo_to_lock->fork_free_mutex);
 	}
 }
 
