@@ -6,11 +6,16 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 16:29:13 by anpollan          #+#    #+#             */
-/*   Updated: 2025/08/11 13:28:04 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/08/14 12:55:53 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
+
+static bool	print_state(t_philo *philo, int state);
+static char	*make_str(int strlen, const char *ms_elapsed, const char *philo_n, int state);
+static void	add_msg_to_str(char *str, int state);
+static int	ft_strlen(const char *str);
 
 void	print_philo_state(t_philo *philo, int state)
 {
@@ -18,43 +23,92 @@ void	print_philo_state(t_philo *philo, int state)
 	pthread_mutex_lock(&philo->table->all_finished_eating_mutex);
 	if (philo->table->all_philosophers_alive
 		&& !philo->table->all_finished_eating)
-	{
-		if (state == THINKING)
-			printf("%lu %d is thinking\n", elapsed_time(philo), philo->n);
-		else if (state == EATING)
-			printf("%lu %d is eating\n", elapsed_time(philo), philo->n);
-		else if (state == TAKE_FORK)
-			printf("%lu %d has taken a fork\n", elapsed_time(philo), philo->n);
-		else if (state == SLEEPING)
-			printf("%lu %d is sleeping\n", elapsed_time(philo), philo->n);
-	}
+			print_state(philo, state);
 	pthread_mutex_unlock(&philo->table->all_alive_mutex);
 	pthread_mutex_unlock(&philo->table->all_finished_eating_mutex);
 }
 
-int	print_error_and_free_memory(t_table *table, int error)
+static bool	print_state(t_philo *philo, int state)
 {
-	if (error == ERR_ARG_COUNT)
-		ft_putstr_fd("Error arg count\n", STDERR_FILENO);
-	else if (error == ERR_INIT_TABLE)
-		ft_putstr_fd("Error initializing table\n", STDERR_FILENO);
-	else if (error == ERR_PARSING)
-		ft_putstr_fd("Error parsing. Use only positive numeric values\n",
-			STDERR_FILENO);
-	else if (error == ERR_PHILO_COUNT)
-		ft_putstr_fd("Error in philo count. Use only numbers 1-500\n",
-			STDERR_FILENO);
-	else if (error == ERR_INIT_PHILO)
-		ft_putstr_fd("Error initializing philosophers\n", STDERR_FILENO);
-	else if (error == ERR_INIT_MUTEXES)
-		ft_putstr_fd("Error initializing mutexes\n", STDERR_FILENO);
-	else if (error == ERR_INIT_FINISH_EAT)
-		ft_putstr_fd("Error initializing finish eating flags\n", STDERR_FILENO);
-	else if (error == ERR_PHILO_THREADS)
-		ft_putstr_fd("Error creating philo threads\n", STDERR_FILENO);
-	else if (error == ERR_OBSERVER_THREAD)
-		ft_putstr_fd("Error in observer thread\n", STDERR_FILENO);
-	if (table)
-		free_app_memory(table);
-	return (EXIT_FAILURE);
+	const char	*ms_elapsed = ft_itoa(elapsed_time(philo));
+	const char	*philo_n = ft_itoa(philo->n);
+	int			strlen;
+	char		*str;
+
+	if (!ms_elapsed || !philo_n)
+		return (false);
+	strlen = ft_strlen(ms_elapsed) + ft_strlen(philo_n) + 2;
+	if (state == THINKING)
+		strlen += 13;
+	else if (state == EATING)
+		strlen += 11;
+	else if (state == TAKE_FORK)
+		strlen += 18;
+	else if (state == SLEEPING)
+		strlen += 12;
+	str = make_str(strlen, ms_elapsed, philo_n, state);
+	write(1, str, strlen);
+	return (true);
+}
+
+static char	*make_str(int strlen, const char *ms_elapsed, const char *philo_n, int state)
+{
+	char	*str;
+	int		i;
+
+	str = malloc(strlen);
+	if (!str)
+		return (NULL);
+	i = 0;
+	while (*ms_elapsed)
+	{
+		str[i] = *ms_elapsed;
+		i++;
+		ms_elapsed++;
+	}
+	str[i++] = ' '; 
+	while (*philo_n)
+	{
+		str[i] = *philo_n;
+		i++;
+		philo_n++;
+	}
+	str[i++] = ' '; 
+	add_msg_to_str(&str[i], state);
+	return (str);
+}
+
+static void	add_msg_to_str(char *str, int state)
+{
+	const char	*thinking = "is thinking\n";
+	const char	*eating = "is eating\n";
+	const char	*take_fork = "has taken a fork\n";
+	const char	*sleeping = "is sleeping\n";
+	const char	*msg;
+
+	if (state == THINKING)
+		msg = thinking;
+	if (state == EATING)
+		msg = eating;
+	if (state == TAKE_FORK)
+		msg = take_fork;
+	if (state == SLEEPING)
+		msg = sleeping;
+	while (*msg)
+	{
+		*str = *msg;
+		str++;
+		msg++;
+	}
+	*str = '\0';
+}
+
+static int	ft_strlen(const char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+		i++;
+	return (i);
 }

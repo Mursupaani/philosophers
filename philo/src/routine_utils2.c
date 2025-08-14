@@ -6,7 +6,7 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 16:46:47 by anpollan          #+#    #+#             */
-/*   Updated: 2025/08/11 14:56:12 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/08/14 12:57:37 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	update_eat_times_and_flag(t_philo *philo)
 
 void	check_death_during_sleeping(t_philo *philo)
 {
-	size_t	end_sleep;
+	int	end_sleep;
 
 	end_sleep = elapsed_time(philo) + philo->time_to_sleep;
 	if (philo->time_to_sleep > 0)

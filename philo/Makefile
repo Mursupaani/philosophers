@@ -6,7 +6,7 @@
 #    By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/06/11 13:06:22 by anpollan          #+#    #+#              #
-#    Updated: 2025/08/11 14:07:42 by anpollan         ###   ########.fr        #
+#    Updated: 2025/08/14 12:40:12 by anpollan         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,9 @@ SRC 		= ./src/main.c \
 			  ./src/observer_routine.c \
 			  ./src/printing.c \
 			  ./src/forks.c \
-			  ./src/ft_putstr_fd.c
+			  ./src/ft_putstr_fd.c \
+			  ./src/ft_itoa.c \
+			  ./src/error.c
 OBJS 		= $(SRC:%.c=%.o)
 HEADER		= ./incl/philo.h
 C_FLAGS		= -Wall -Wextra -Werror -pthread -g -I$(INCL_DIR)

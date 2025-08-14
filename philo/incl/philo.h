@@ -6,7 +6,7 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 15:45:07 by anpollan          #+#    #+#             */
-/*   Updated: 2025/08/11 14:31:50 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/08/14 12:56:57 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,9 +65,9 @@ typedef struct s_philosoper
 	int				index;
 	int				n;
 	int				index_next;
-	size_t			time_to_die;
-	size_t			time_to_eat;
-	size_t			time_to_sleep;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
 	int				times_to_eat;
 	size_t			last_meal_time;
 	struct timeval	time_now;
@@ -109,12 +109,12 @@ int		*ft_atoi_safe(const char *nptr);
 void	*routine(void *arg);
 bool	observer_routine(t_table *table);
 bool	free_app_memory(t_table *table);
-size_t	elapsed_time(t_philo *philo);
+int		elapsed_time(t_philo *philo);
 t_table	*init_table(void);
 bool	init_table_mutexes(t_table *table);
 bool	init_philosophers(t_table *table);
 bool	init_philo_mutexes(t_table *table);
-size_t	ms_between_meals(t_philo *philo);
+int		ms_between_meals(t_philo *philo);
 void	make_odd_philos_wait(t_philo *philo);
 void	wait_for_philosophers_to_be_ready(t_philo *philo);
 bool	all_philos_alive(t_philo *philo);
@@ -129,5 +129,6 @@ void	free_fork(t_philo *philo_to_free);
 bool	all_philosophers_ate_enough(t_philo *philo);
 void	ft_putstr_fd(char *s, int fd);
 int		print_error_and_free_memory(t_table *table, int error);
+char	*ft_itoa(int n);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 11:55:27 by anpollan          #+#    #+#             */
-/*   Updated: 2025/08/11 13:25:52 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/08/14 12:57:24 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static bool	philo_think(t_philo *philo)
 
 static bool	philo_eat(t_philo *philo)
 {
-	size_t	end_eat;
+	int	end_eat;
 
 	if (!take_forks(philo))
 		return (false);

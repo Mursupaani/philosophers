@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-size_t	elapsed_time(t_philo *philo)
+int	elapsed_time(t_philo *philo)
 {
 	size_t	time;
 
@@ -27,7 +27,7 @@ size_t	elapsed_time(t_philo *philo)
 	return (time);
 }
 
-size_t	ms_between_meals(t_philo *philo)
+int	ms_between_meals(t_philo *philo)
 {
 	size_t	time_now;
 	size_t	ms_between_meals;

@@ -6,7 +6,7 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 15:29:31 by anpollan          #+#    #+#             */
-/*   Updated: 2025/08/07 15:41:57 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/08/14 12:56:19 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,5 +85,5 @@ static bool	all_philos_still_alive(t_table *table)
 
 static void	print_philo_dead(t_philo *philo)
 {
-	printf("%lu %d died\n", elapsed_time(philo), philo->n);
+	printf("%d %d died\n", elapsed_time(philo), philo->n);
 }
