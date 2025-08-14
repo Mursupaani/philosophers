@@ -6,7 +6,7 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 16:46:47 by anpollan          #+#    #+#             */
-/*   Updated: 2025/08/14 12:57:37 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/08/14 18:06:34 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,7 @@ bool	is_philo_alive(t_philo *philo)
 {
 	if (ms_between_meals(philo) >= philo->time_to_die)
 	{
-		pthread_mutex_lock(&philo->alive_mutex);
 		philo->alive = false;
-		pthread_mutex_unlock(&philo->alive_mutex);
 		return (false);
 	}
 	return (true);
@@ -29,9 +27,7 @@ void	update_eat_times_and_flag(t_philo *philo)
 	philo->times_to_eat--;
 	if (!philo->times_to_eat)
 	{
-		// pthread_mutex_lock(&philo->finished_eating_mutex);
 		philo->finished_eating = true;
-		// pthread_mutex_unlock(&philo->finished_eating_mutex);
 	}
 }
 
@@ -42,15 +38,19 @@ void	check_death_during_sleeping(t_philo *philo)
 	end_sleep = elapsed_time(philo) + philo->time_to_sleep;
 	if (philo->time_to_sleep > 0)
 	{
-		while (is_philo_alive(philo) && all_philos_alive(philo)
+		while (is_philo_alive(philo) && !philo->table->simulation_over
 			&& end_sleep > elapsed_time(philo))
 			usleep(PHILO_SLEEP_CYCLE_LENGTH);
 	}
 }
 
-bool	all_philosophers_ate_enough(t_philo *philo)
+bool	sleep_until(t_philo *philo, int time_to_sleep_until)
 {
-	if (philo->table->all_finished_eating)
-		return (true);
-	return (false);
+	while (time_to_sleep_until < elapsed_time(philo))
+	{
+		if (philo->table->simulation_over || !is_philo_alive(philo))
+			return (false);
+		usleep(250);
+	}
+	return (true);
 }

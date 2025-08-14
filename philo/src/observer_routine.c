@@ -6,7 +6,7 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 15:29:31 by anpollan          #+#    #+#             */
-/*   Updated: 2025/08/14 12:56:19 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/08/14 18:19:47 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 static bool	all_philos_finished_eating(t_table *table);
 static bool	all_philos_still_alive(t_table *table);
-static void	print_philo_dead(t_philo *philo);
+static void	print_philo_dead(t_philo *philo, t_table *table);
+static int	elapsed_time_observer(t_table *table);
 
 bool	observer_routine(t_table *table)
 {
@@ -22,9 +23,7 @@ bool	observer_routine(t_table *table)
 		return (false);
 	if (table->num_of_philos_created != table->num_of_threads_created)
 	{
-		pthread_mutex_lock(&table->all_alive_mutex);
-		table->all_philosophers_alive = false;
-		pthread_mutex_unlock(&table->all_alive_mutex);
+		table->simulation_over = true;
 		return (false);
 	}
 	while (true)
@@ -34,7 +33,7 @@ bool	observer_routine(t_table *table)
 		if (table->params[TIMES_TO_EAT] != -1
 			&& all_philos_finished_eating(table))
 			return (true);
-		usleep(10);
+		usleep(1000);
 	}
 }
 
@@ -49,9 +48,7 @@ static bool	all_philos_finished_eating(t_table *table)
 			return (false);
 		i++;
 	}
-	pthread_mutex_lock(&table->all_finished_eating_mutex);
-	table->all_finished_eating = true;
-	pthread_mutex_unlock(&table->all_finished_eating_mutex);
+	table->simulation_over = true;
 	return (true);
 }
 
@@ -64,10 +61,8 @@ static bool	all_philos_still_alive(t_table *table)
 	{
 		if (!table->philos[i].alive)
 		{
-			pthread_mutex_lock(&table->all_alive_mutex);
-			table->all_philosophers_alive = false;
-			pthread_mutex_unlock(&table->all_alive_mutex);
-			print_philo_dead(&table->philos[i]);
+			table->simulation_over = true;
+			print_philo_dead(&table->philos[i], table);
 			return (false);
 		}
 		i++;
@@ -75,7 +70,25 @@ static bool	all_philos_still_alive(t_table *table)
 	return (true);
 }
 
-static void	print_philo_dead(t_philo *philo)
+static void	print_philo_dead(t_philo *philo, t_table *table)
 {
-	printf("%d %d died\n", elapsed_time(philo), philo->n);
+	int	elapsed_time;
+
+	elapsed_time = elapsed_time_observer(table);
+	usleep(2000);
+	printf("%d %d died\n", elapsed_time, philo->n);
+}
+
+static int	elapsed_time_observer(t_table *table)
+{
+	int				time;
+	struct timeval	time_now;
+
+	if (gettimeofday(&time_now, NULL))
+		return (-1);
+	time = time_now.tv_sec * 1000
+		+ time_now.tv_usec / 1000
+		- table->start_time.tv_sec * 1000
+		- table->start_time.tv_usec / 1000;
+	return (time);
 }

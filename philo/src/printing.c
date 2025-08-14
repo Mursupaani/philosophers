@@ -6,7 +6,7 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 16:29:13 by anpollan          #+#    #+#             */
-/*   Updated: 2025/08/14 12:55:53 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/08/14 18:04:24 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,21 @@ bool	print_philo_state(t_philo *philo, int state)
 {
 	char		buf[32];
 	int			len;
-	pthread_mutex_lock(&philo->table->all_ready_mutex);
+
+	pthread_mutex_lock(&philo->table->print_mutex);
 	len = ft_itoa_to_buf(elapsed_time(philo), buf, 32);
 	buf[len++] = ' ';
 	len += ft_itoa_to_buf(philo->n, &buf[len], 32);
 	buf[len++] = ' ';
 	add_msg_to_str(&buf[len], state);
-	if (philo->table->all_philosophers_alive
-		&& !philo->table->all_finished_eating)
+	if (is_philo_alive(philo) && !philo->table->simulation_over)
+	{
+		pthread_mutex_unlock(&philo->table->print_mutex);
 		write(1, buf, ft_strlen(buf));
-	pthread_mutex_unlock(&philo->table->all_ready_mutex);
-	return (true);
+		return (true);
+	}
+	pthread_mutex_unlock(&philo->table->print_mutex);
+	return (false);
 }
 
 static int	ft_strlen(const char *str)

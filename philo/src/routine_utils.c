@@ -6,7 +6,7 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/06 16:27:49 by anpollan          #+#    #+#             */
-/*   Updated: 2025/08/06 16:28:47 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/08/14 18:10:04 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,21 +45,8 @@ void	wait_for_philosophers_to_be_ready(t_philo *philo)
 {
 	while (true)
 	{
-		pthread_mutex_lock(&philo->table->all_ready_mutex);
 		if (philo->table->all_philosophers_ready)
-		{
-			pthread_mutex_unlock(&philo->table->all_ready_mutex);
 			break ;
-		}
-		pthread_mutex_unlock(&philo->table->all_ready_mutex);
 		usleep(200);
 	}
-}
-
-bool	all_philos_alive(t_philo *philo)
-{
-	if (philo->table->all_philosophers_alive)
-		return (true);
-	else
-		return (false);
 }

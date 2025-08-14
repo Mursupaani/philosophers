@@ -6,13 +6,14 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/05 15:42:46 by anpollan          #+#    #+#             */
-/*   Updated: 2025/08/11 13:25:32 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/08/14 18:49:30 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
 static bool	start_routines(t_table *table);
+static bool	start_simulation_clock(t_table *table);
 
 int	main(int ac, char *av[])
 {
@@ -43,13 +44,13 @@ int	main(int ac, char *av[])
 
 static bool	start_routines(t_table *table)
 {
-	int	i;
+	int		i;
 
 	i = 0;
 	while (i < table->params[PHILO_COUNT])
 	{
-		if (pthread_create(
-				&table->philos[i].philo, NULL, &routine, &table->philos[i]))
+		if (pthread_create( &table->philos[i].philo, NULL,
+					 routine, &table->philos[i]))
 		{
 			free_app_memory(table);
 			return (false);
@@ -57,15 +58,21 @@ static bool	start_routines(t_table *table)
 		table->num_of_threads_created++;
 		i++;
 	}
+	if (!start_simulation_clock(table))
+		return (false);
+	return (true);
+}
+
+static bool	start_simulation_clock(t_table *table)
+{
 	pthread_mutex_lock(&table->time_mutex);
 	if (gettimeofday(&table->start_time, NULL))
 	{
+		table->simulation_over = true;
 		free_app_memory(table);
 		return (false);
 	}
 	pthread_mutex_unlock(&table->time_mutex);
-	pthread_mutex_lock(&table->all_ready_mutex);
 	table->all_philosophers_ready = true;
-	pthread_mutex_unlock(&table->all_ready_mutex);
 	return (true);
 }

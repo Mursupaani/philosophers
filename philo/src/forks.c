@@ -6,7 +6,7 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/11 14:07:04 by anpollan          #+#    #+#             */
-/*   Updated: 2025/08/11 14:55:58 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/08/14 18:25:28 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,17 +27,13 @@ bool	take_forks(t_philo *philo)
 		philo_1 = &philo->table->philos[philo->index_next];
 		philo_2 = philo;
 	}
-	if (!is_philo_alive(philo) || !all_philos_alive(philo)
-		|| !lock_fork(philo, philo_1))
+	if (!lock_fork(philo, philo_1))
 		return (false);
-	print_philo_state(philo, TAKE_FORK);
-	if (!is_philo_alive(philo) || !all_philos_alive(philo)
-		|| !lock_fork(philo, philo_2))
+	if (!lock_fork(philo, philo_2))
 	{
 		free_fork(philo_1);
 		return (false);
 	}
-	print_philo_state(philo, TAKE_FORK);
 	return (true);
 }
 
@@ -62,25 +58,16 @@ void	return_forks(t_philo *philo)
 
 bool	lock_fork(t_philo *philo, t_philo *philo_to_lock)
 {
-	while (true)
+	pthread_mutex_lock(&philo_to_lock->fork_mutex);
+	if (!print_philo_state(philo, TAKE_FORK))
 	{
-		if (!is_philo_alive(philo) || !all_philos_alive(philo))
-			return (false);
-		if (philo_to_lock->fork_free)
-		{
-			pthread_mutex_lock(&philo_to_lock->fork_free_mutex);
-			philo_to_lock->fork_free = false;
-			pthread_mutex_unlock(&philo_to_lock->fork_free_mutex);
-			pthread_mutex_lock(&philo_to_lock->fork_mutex);
-			return (true);
-		}
+		pthread_mutex_unlock(&philo_to_lock->fork_mutex);
+		return (false);
 	}
+	return (true);
 }
 
 void	free_fork(t_philo *philo_to_free)
 {
-	pthread_mutex_lock(&philo_to_free->fork_free_mutex);
 	pthread_mutex_unlock(&philo_to_free->fork_mutex);
-	philo_to_free->fork_free = true;
-	pthread_mutex_unlock(&philo_to_free->fork_free_mutex);
 }

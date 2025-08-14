@@ -6,7 +6,7 @@
 /*   By: anpollan <anpollan@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/07 12:27:32 by anpollan          #+#    #+#             */
-/*   Updated: 2025/08/11 14:20:10 by anpollan         ###   ########.fr       */
+/*   Updated: 2025/08/14 18:12:23 by anpollan         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,15 +51,6 @@ bool	init_philo_mutexes(t_table *table)
 		if (pthread_mutex_init(&table->philos[i].fork_mutex, NULL))
 			return (false);
 		table->num_of_forks_mutexes_created++;
-		if (pthread_mutex_init(&table->philos[i].fork_free_mutex, NULL))
-			return (false);
-		table->num_of_forks_free_mutexes_created++;
-		if (pthread_mutex_init(&table->philos[i].alive_mutex, NULL))
-			return (false);
-		table->num_of_alive_mutexes_created++;
-		if (pthread_mutex_init(&table->philos[i].finished_eating_mutex, NULL))
-			return (false);
-		table->num_of_finished_eating_mutexes_created++;
 		i++;
 	}
 	return (true);
@@ -67,18 +58,12 @@ bool	init_philo_mutexes(t_table *table)
 
 bool	init_table_mutexes(t_table *table)
 {
-	if (pthread_mutex_init(&table->all_alive_mutex, NULL))
-		return (false);
-	table->all_alive_mutex_init = true;
-	if (pthread_mutex_init(&table->all_ready_mutex, NULL))
-		return (false);
-	table->all_ready_mutex_init = true;
 	if (pthread_mutex_init(&table->time_mutex, NULL))
 		return (false);
 	table->time_mutex_init = true;
-	if (pthread_mutex_init(&table->all_finished_eating_mutex, NULL))
+	if (pthread_mutex_init(&table->print_mutex, NULL))
 		return (false);
-	table->all_finised_eating_mutex_init = true;
+	table->print_mutex_init = true;
 	return (true);
 }
 
@@ -91,6 +76,5 @@ t_table	*init_table(void)
 		return (NULL);
 	memset(table, 0, sizeof(t_table));
 	table->params[TIMES_TO_EAT] = -1;
-	table->all_philosophers_alive = true;
 	return (table);
 }
