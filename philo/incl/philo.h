@@ -21,6 +21,7 @@
 # include <stdbool.h>
 # include <limits.h>
 # include <string.h>
+# include <stdatomic.h>
 
 # define ODD_PHILO_WAIT_TIME 500
 # define PHILO_SLEEP_CYCLE_LENGTH 1000
@@ -38,14 +39,17 @@ typedef struct s_table
 	int				num_of_threads_created;
 	int				num_of_alive_mutexes_created;
 	int				num_of_finished_eating_mutexes_created;
+	atomic_int		all_philosophers_alive;
+	atomic_int		all_finished_eating;
+	atomic_int		all_philosophers_ready;
 	pthread_mutex_t	all_alive_mutex;
 	bool			all_alive_mutex_init;
-	bool			all_philosophers_alive;
+	// bool			all_philosophers_alive;
 	pthread_mutex_t	all_ready_mutex;
 	bool			all_ready_mutex_init;
-	bool			all_philosophers_ready;
+	// bool			all_philosophers_ready;
 	pthread_mutex_t	all_finished_eating_mutex;
-	bool			all_finished_eating;
+	// bool			all_finished_eating;
 	bool			all_finised_eating_mutex_init;
 	pthread_mutex_t	time_mutex;
 	bool			time_mutex_init;
@@ -96,6 +100,7 @@ enum	e_error
 	ERR_ARG_COUNT,
 	ERR_INIT_TABLE,
 	ERR_PARSING,
+	ERR_EAT_TIMES,
 	ERR_PHILO_COUNT,
 	ERR_INIT_PHILO,
 	ERR_INIT_MUTEXES,

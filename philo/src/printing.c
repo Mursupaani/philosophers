@@ -19,13 +19,9 @@ static int	ft_strlen(const char *str);
 
 void	print_philo_state(t_philo *philo, int state)
 {
-	pthread_mutex_lock(&philo->table->all_alive_mutex);
-	pthread_mutex_lock(&philo->table->all_finished_eating_mutex);
 	if (philo->table->all_philosophers_alive
 		&& !philo->table->all_finished_eating)
 			print_state(philo, state);
-	pthread_mutex_unlock(&philo->table->all_alive_mutex);
-	pthread_mutex_unlock(&philo->table->all_finished_eating_mutex);
 }
 
 static bool	print_state(t_philo *philo, int state)

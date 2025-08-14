@@ -21,6 +21,8 @@ int	print_error_and_free_memory(t_table *table, int error)
 	else if (error == ERR_PARSING)
 		ft_putstr_fd("Error parsing. Use only positive numeric values\n",
 			STDERR_FILENO);
+	else if (error == ERR_EAT_TIMES)
+		ft_putstr_fd("Error eat times. Use values above 0\n", STDERR_FILENO);
 	else if (error == ERR_PHILO_COUNT)
 		ft_putstr_fd("Error in philo count. Use only numbers 1-500\n",
 			STDERR_FILENO);

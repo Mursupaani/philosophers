@@ -50,12 +50,12 @@ void	check_death_during_sleeping(t_philo *philo)
 
 bool	all_philosophers_ate_enough(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->table->all_finished_eating_mutex);
+	// pthread_mutex_lock(&philo->table->all_finished_eating_mutex);
 	if (philo->table->all_finished_eating)
 	{
-		pthread_mutex_unlock(&philo->table->all_finished_eating_mutex);
+		// pthread_mutex_unlock(&philo->table->all_finished_eating_mutex);
 		return (true);
 	}
-	pthread_mutex_unlock(&philo->table->all_finished_eating_mutex);
+	// pthread_mutex_unlock(&philo->table->all_finished_eating_mutex);
 	return (false);
 }

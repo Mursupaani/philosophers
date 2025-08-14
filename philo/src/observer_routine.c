@@ -40,7 +40,7 @@ bool	observer_routine(t_table *table)
 
 static bool	all_philos_finished_eating(t_table *table)
 {
-	int	i;
+	 int	i;
 
 	i = 0;
 	while (i < table->num_of_philos_created)

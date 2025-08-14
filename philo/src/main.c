@@ -25,6 +25,8 @@ int	main(int ac, char *av[])
 		return (print_error_and_free_memory(table, ERR_INIT_TABLE));
 	if (!parse_input_args(ac, av, table))
 		return (print_error_and_free_memory(table, ERR_PARSING));
+	if (table->params[TIMES_TO_EAT] == 0)
+		return (print_error_and_free_memory(table, ERR_EAT_TIMES));
 	if (table->params[PHILO_COUNT] > MAX_PHILOS || !table->params[PHILO_COUNT])
 		return (print_error_and_free_memory(table, ERR_PHILO_COUNT));
 	if (!init_philosophers(table))

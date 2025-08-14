@@ -29,8 +29,8 @@ int	elapsed_time(t_philo *philo)
 
 int	ms_between_meals(t_philo *philo)
 {
-	size_t	time_now;
-	size_t	ms_between_meals;
+	int	time_now;
+	int	ms_between_meals;
 
 	time_now = elapsed_time(philo);
 	ms_between_meals = time_now - philo->last_meal_time;
@@ -60,15 +60,15 @@ void	wait_for_philosophers_to_be_ready(t_philo *philo)
 
 bool	all_philos_alive(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->table->all_alive_mutex);
+	// pthread_mutex_lock(&philo->table->all_alive_mutex);
 	if (philo->table->all_philosophers_alive)
 	{
-		pthread_mutex_unlock(&philo->table->all_alive_mutex);
+		// pthread_mutex_unlock(&philo->table->all_alive_mutex);
 		return (true);
 	}
 	else
 	{
-		pthread_mutex_unlock(&philo->table->all_alive_mutex);
+		// pthread_mutex_unlock(&philo->table->all_alive_mutex);
 		return (false);
 	}
 }
