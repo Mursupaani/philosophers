@@ -33,9 +33,9 @@ typedef struct s_table
 {
 	t_philosopher	*philos;
 	int				params[5];
-	int				num_of_philos_created;
-	int				num_of_forks_mutexes_created;
-	int				num_of_threads_created;
+	atomic_int		num_of_philos_created;
+	atomic_int		num_of_forks_mutexes_created;
+	atomic_int		num_of_threads_created;
 	atomic_int		simulation_over;
 	atomic_int		all_philosophers_ready;
 	pthread_mutex_t	print_mutex;

@@ -3,3 +3,4 @@
 *.a
 philo*
 .cache/
+trace.txt
