@@ -28,8 +28,8 @@ bool	print_philo_state(t_philo *philo, int state)
 	add_msg_to_str(&buf[len], state);
 	if (is_philo_alive(philo) && !philo->table->simulation_over)
 	{
-		pthread_mutex_unlock(&philo->table->print_mutex);
 		write(1, buf, ft_strlen(buf));
+		pthread_mutex_unlock(&philo->table->print_mutex);
 		return (true);
 	}
 	pthread_mutex_unlock(&philo->table->print_mutex);
