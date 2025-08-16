@@ -23,7 +23,7 @@ bool	print_philo_state(t_philo *philo, int state)
 	pthread_mutex_lock(&philo->table->print_mutex);
 	len = ft_itoa_to_buf(elapsed_time(philo), buf, 32);
 	buf[len++] = ' ';
-	len += ft_itoa_to_buf(philo->n, &buf[len], 32);
+	len += ft_itoa_to_buf(philo->n, &buf[len], 32 - len);
 	buf[len++] = ' ';
 	add_msg_to_str(&buf[len], state);
 	if (is_philo_alive(philo) && !philo->table->simulation_over)
