@@ -17,7 +17,7 @@ static bool	all_philos_still_alive(t_table *table);
 static void	print_philo_dead(t_philo *philo, t_table *table);
 static int	elapsed_time_observer(t_table *table);
 
-bool	observer_routine(t_table *table)
+bool	routine_observer(t_table *table)
 {
 	if (!table)
 		return (false);

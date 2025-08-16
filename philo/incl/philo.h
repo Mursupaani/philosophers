@@ -99,9 +99,9 @@ enum	e_error
 bool	parse_input_args(int ac, char **av, t_table *table);
 bool	print_philo_state(t_philo *philo, int state);
 int		*ft_atoi_safe(const char *nptr);
-void	*routine(void *arg);
+void	*routine_even(void *arg);
 void	*routine_odd(void *arg);
-bool	observer_routine(t_table *table);
+bool	routine_observer(t_table *table);
 bool	free_app_memory(t_table *table);
 int		elapsed_time(t_philo *philo);
 t_table	*init_table(void);
@@ -126,5 +126,6 @@ bool	philo_sleep(t_philo *philo);
 bool	philo_eat(t_philo *philo);
 void	store_start_time(t_philo *philo);
 bool	sleep_until(t_philo *philo, int time_to_sleep_until);
+void	make_odd_routine_philos_wait(t_philo *philo);
 
 #endif

@@ -36,7 +36,7 @@ int	main(int ac, char *av[])
 		return (print_error_and_free_memory(table, ERR_INIT_MUTEXES));
 	if (!start_routines(table))
 		return (print_error_and_free_memory(table, ERR_PHILO_THREADS));
-	if (!observer_routine(table))
+	if (!routine_observer(table))
 		return (print_error_and_free_memory(table, ERR_OBSERVER_THREAD));
 	free_app_memory(table);
 	return (EXIT_SUCCESS);
@@ -45,7 +45,12 @@ int	main(int ac, char *av[])
 static bool	start_routines(t_table *table)
 {
 	int		i;
+	void	*routine;
 
+	if (table->params[PHILO_COUNT] % 2 == 0)
+		routine = &routine_even;
+	else
+		routine = &routine_odd;
 	i = 0;
 	while (i < table->params[PHILO_COUNT])
 	{

@@ -12,7 +12,7 @@
 
 #include "philo.h"
 
-void	*routine(void *arg)
+void	*routine_even(void *arg)
 {
 	t_philo	*philo;
 
@@ -47,7 +47,7 @@ bool	philo_think(t_philo *philo)
 
 bool	philo_eat(t_philo *philo)
 {
-	int	end_eat;
+	int	end_time;
 
 	if (!is_philo_alive(philo))
 	{
@@ -57,9 +57,9 @@ bool	philo_eat(t_philo *philo)
 	print_philo_state(philo, EATING);
 	if (philo->times_to_eat > 0)
 		update_eat_times_and_flag(philo);
-	end_eat = elapsed_time(philo) + philo->time_to_eat;
+	end_time = elapsed_time(philo) + philo->time_to_eat;
 	philo->last_meal_time = elapsed_time(philo);
-	while (!philo->table->simulation_over && end_eat > elapsed_time(philo))
+	while (!philo->table->simulation_over && end_time > elapsed_time(philo))
 		usleep(PHILO_SLEEP_CYCLE_LENGTH);
 	return (true);
 }
