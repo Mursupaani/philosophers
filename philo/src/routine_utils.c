@@ -45,7 +45,8 @@ void	wait_for_philosophers_to_be_ready(t_philo *philo)
 {
 	while (true)
 	{
-		if (philo->table->all_philosophers_ready)
+		if (philo->table->all_philosophers_ready
+			|| philo->table->simulation_over)
 			break ;
 		usleep(200);
 	}

@@ -43,14 +43,3 @@ void	check_death_during_sleeping(t_philo *philo)
 			usleep(PHILO_SLEEP_CYCLE_LENGTH);
 	}
 }
-
-bool	sleep_until(t_philo *philo, int time_to_sleep_until)
-{
-	while (time_to_sleep_until < elapsed_time(philo))
-	{
-		if (philo->table->simulation_over || !is_philo_alive(philo))
-			return (false);
-		usleep(250);
-	}
-	return (true);
-}

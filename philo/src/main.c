@@ -47,8 +47,10 @@ static bool	start_routines(t_table *table)
 	int		i;
 	void	*routine;
 
-	if (table->params[PHILO_COUNT] % 2 == 0)
+	if (table->num_of_philos_created % 2 == 0)
 		routine = &routine_even;
+	else if (table->num_of_philos_created == 1)
+		routine = &routine_single_philo;
 	else
 		routine = &routine_odd;
 	i = 0;
@@ -73,8 +75,8 @@ static bool	start_simulation_clock(t_table *table)
 	pthread_mutex_lock(&table->time_mutex);
 	if (gettimeofday(&table->start_time, NULL))
 	{
+		pthread_mutex_unlock(&table->time_mutex);
 		table->simulation_over = true;
-		free_app_memory(table);
 		return (false);
 	}
 	pthread_mutex_unlock(&table->time_mutex);

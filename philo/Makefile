@@ -17,7 +17,7 @@ SRC 		= ./src/main.c \
 			  ./src/parsing.c \
 			  ./src/ft_atoi_safe.c \
 			  ./src/free_memory.c \
-			  ./src/routine.c \
+			  ./src/routine_even.c \
 			  ./src/routine_odd.c \
 			  ./src/routine_utils.c \
 			  ./src/routine_utils2.c \
@@ -44,7 +44,7 @@ clean:
 	rm -rf $(OBJS)
 
 fclean: clean
-	rm -rf $(NAME) compile_commands.json
+	rm -rf $(NAME)
 
 re: fclean all
 

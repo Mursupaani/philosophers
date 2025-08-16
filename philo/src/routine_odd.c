@@ -20,6 +20,8 @@ void	*routine_odd(void *arg)
 
 	philo = (t_philo *)arg;
 	wait_for_philosophers_to_be_ready(philo);
+	if (philo->table->simulation_over)
+		return (NULL);
 	store_start_time(philo);
 	philo->last_meal_time = elapsed_time(philo);
 	while (true)
@@ -53,4 +55,20 @@ static void	wait_before_taking_forks(t_philo *philo)
 		while (end_time > elapsed_time(philo))
 			usleep(PHILO_SLEEP_CYCLE_LENGTH);
 	}
+}
+
+void	*routine_single_philo(t_philo *philo)
+{
+	int	end_time;
+
+	wait_for_philosophers_to_be_ready(philo);
+	store_start_time(philo);
+	if (!is_philo_alive(philo) || philo->table->simulation_over)
+		return (NULL);
+	lock_fork(philo, philo);
+	end_time = elapsed_time(philo) + philo->time_to_die;
+	while (is_philo_alive(philo) && end_time > elapsed_time(philo))
+		usleep(PHILO_SLEEP_CYCLE_LENGTH);
+	free_fork(philo);
+	return (NULL);
 }

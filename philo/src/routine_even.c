@@ -18,6 +18,8 @@ void	*routine_even(void *arg)
 
 	philo = (t_philo *)arg;
 	wait_for_philosophers_to_be_ready(philo);
+	if (philo->table->simulation_over)
+		return (NULL);
 	store_start_time(philo);
 	philo->last_meal_time = elapsed_time(philo);
 	while (true)

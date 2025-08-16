@@ -125,7 +125,7 @@ bool	philo_think(t_philo *philo);
 bool	philo_sleep(t_philo *philo);
 bool	philo_eat(t_philo *philo);
 void	store_start_time(t_philo *philo);
-bool	sleep_until(t_philo *philo, int time_to_sleep_until);
 void	make_odd_routine_philos_wait(t_philo *philo);
+void	*routine_single_philo(t_philo *philo);
 
 #endif

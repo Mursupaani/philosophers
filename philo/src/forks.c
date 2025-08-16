@@ -59,17 +59,7 @@ void	return_forks(t_philo *philo)
 
 bool	lock_fork(t_philo *philo, t_philo *philo_to_lock)
 {
-	if (philo->table->num_of_philos_created == 1)
-	{
-		while (!philo_to_lock->fork_free && is_philo_alive(philo))
-			usleep(PHILO_SLEEP_CYCLE_LENGTH);
-		if (!is_philo_alive(philo))
-			return (false);
-		pthread_mutex_lock(&philo_to_lock->fork_mutex);
-		philo_to_lock->fork_free = false;
-	}
-	else
-		pthread_mutex_lock(&philo_to_lock->fork_mutex);
+	pthread_mutex_lock(&philo_to_lock->fork_mutex);
 	if (!print_philo_state(philo, TAKE_FORK))
 	{
 		pthread_mutex_unlock(&philo_to_lock->fork_mutex);
@@ -81,6 +71,4 @@ bool	lock_fork(t_philo *philo, t_philo *philo_to_lock)
 void	free_fork(t_philo *philo_to_free)
 {
 	pthread_mutex_unlock(&philo_to_free->fork_mutex);
-	if (philo_to_free->table->num_of_philos_created == 1)
-		philo_to_free->fork_free = true;
 }
