@@ -34,7 +34,7 @@ C_FLAGS		= -Wall -Wextra -Werror -pthread -g -I$(INCL_DIR)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	cc $(C_FLAGS) $(OBJS) $(MLX) $(MLXFLAGS) -o $(NAME)
+	cc $(C_FLAGS) $(OBJS) -o $(NAME)
 
 %.o: %.c $(HEADER)
 	cc $(C_FLAGS) -c $< -o $@
