@@ -23,7 +23,7 @@
 # include <string.h>
 # include <stdatomic.h>
 
-# define ODD_PHILO_WAIT_TIME 500
+# define PHILO_WAIT_TIME 500
 # define PHILO_SLEEP_CYCLE_LENGTH 1000
 # define MAX_PHILOS 500
 
@@ -109,8 +109,8 @@ bool	init_table_mutexes(t_table *table);
 bool	init_philosophers(t_table *table);
 bool	init_philo_mutexes(t_table *table);
 int		ms_between_meals(t_philo *philo);
-void	make_odd_philos_wait(t_philo *philo);
-void	wait_for_philosophers_to_be_ready(t_philo *philo);
+void	make_even_philos_wait(t_philo *philo);
+bool	wait_for_philosophers_to_be_ready(t_philo *philo);
 bool	is_philo_alive(t_philo *philo);
 void	update_eat_times_and_flag(t_philo *philo);
 void	check_death_during_sleeping(t_philo *philo);

@@ -17,15 +17,14 @@ void	*routine_even(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	wait_for_philosophers_to_be_ready(philo);
-	if (philo->table->simulation_over)
+	if (!wait_for_philosophers_to_be_ready(philo))
 		return (NULL);
 	store_start_time(philo);
 	philo->last_meal_time = elapsed_time(philo);
 	while (true)
 	{
-		make_odd_philos_wait(philo);
-		if (!is_philo_alive(philo) || philo->table->simulation_over)
+		make_even_philos_wait(philo);
+		if (philo->table->simulation_over)
 			break ;
 		if (!take_forks(philo))
 			break ;

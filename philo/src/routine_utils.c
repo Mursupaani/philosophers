@@ -35,19 +35,20 @@ int	ms_between_meals(t_philo *philo)
 	return (ms_between_meals);
 }
 
-void	make_odd_philos_wait(t_philo *philo)
+void	make_even_philos_wait(t_philo *philo)
 {
-	if ((philo->index) % 2 == 0)
-		usleep(ODD_PHILO_WAIT_TIME);
+	if ((philo->n) % 2 == 0)
+		usleep(PHILO_WAIT_TIME);
 }
 
-void	wait_for_philosophers_to_be_ready(t_philo *philo)
+bool	wait_for_philosophers_to_be_ready(t_philo *philo)
 {
 	while (true)
 	{
-		if (philo->table->all_philosophers_ready
-			|| philo->table->simulation_over)
-			break ;
+		if (philo->table->all_philosophers_ready)
+			return (true);
+		if (philo->table->simulation_over)
+			return (false);
 		usleep(200);
 	}
 }
