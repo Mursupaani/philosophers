@@ -1,6 +1,6 @@
 *.json
 *.o
 *.a
-philo*
 .cache/
 trace.txt
+philo
